@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace = "com.main.dao.AppDao">
+	<resultMap type="com.main.model.App" id="fullAppResult">
+		<id column="app_id" property="app_id"/>
+		<result column="last_cate_id" property="last_cate_id"/>
+		<result column="app_title" property="app_title"/>
+		<result column="app_stitle" property="app_stitle"/>
+		<result column="app_version" property="app_version"/>
+		<result column="app_update_time" property="app_update_time"/>
+		<result column="app_size" property="app_size"/>
+		<result column="app_system" property="app_system"/>
+		<result column="app_type" property="app_type"/>
+		<result column="app_logo" property="app_logo"/>
+		<result column="app_desc" property="app_desc"/>
+		<result column="app_company" property="app_company"/>
+		<result column="app_company_url" property="app_company_url"/>
+		<result column="app_tags" property="app_tags"/>
+		<result column="create_time" property="create_time"/>
+		<result column="app_grade" property="app_grade"/>
+		<result column="app_recomment" property="app_recomment"/>
+		<result column="uid" property="uid"/>
+		<result column="uname" property="uname"/>
+		<result column="app_comments" property="app_comments"/>
+		<result column="app_visitors" property="app_visitors"/>
+		<result column="app_down" property="app_down"/>
+		<result column="app_order" property="app_order"/>
+		<result column="data_app_id" property="data_app_id"/>
+		<result column="charge_app_id" property="charge_app_id"/>
+		<result column="rewrite_tag" property="rewrite_tag"/>
+		<result column="seo_title" property="seo_title"/>
+		<result column="seo_keywords" property="seo_keywords"/>
+		<result column="seo_desc" property="seo_desc"/>
+	</resultMap>
+	<resultMap type="com.main.model.App" id="appResult">
+		<id column="app_id" property="app_id"/>
+		<result column="last_cate_id" property="last_cate_id"/>
+		<result column="app_title" property="app_title"/>
+		<result column="app_version" property="app_version"/>
+		<result column="app_update_time" property="app_update_time"/>
+		<result column="app_size" property="app_size"/>
+		<result column="app_logo" property="app_logo"/>
+		<result column="app_grade" property="app_grade"/>
+		<result column="app_visitors" property="app_visitors"/>
+		<result column="app_down" property="app_down"/>
+		<result column="app_order" property="app_order"/>
+	</resultMap>
+	<select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
+		<!-- select * from t_app_list LIMIT #{0}*#{1},#{1} -->
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order from t_app_list limit 0,10
+	</select>
+
+
+
+<!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
+		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
+			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})
+	</insert>
+	<select id="findById" parameterType = "int" resultType="com.main.model.User">
+		select * from t_user where uid =#{uid}
+	</select>
+	<select id="findAll" resultType="com.main.model.User">
+		select * from t_user
+	</select> -->
+</mapper>
