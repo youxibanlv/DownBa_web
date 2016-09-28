@@ -57,4 +57,16 @@ public class AppServiceImpl implements IAppService {
 		return false;
 	}
 
+	@Override
+	public int getTotalApp() {
+		int count = 0;
+		try {
+			count =appDao.getTotalApp();
+		} catch (Exception e) {
+			e.printStackTrace();
+			count = 0;
+		}
+		return count;
+	}
+
 }

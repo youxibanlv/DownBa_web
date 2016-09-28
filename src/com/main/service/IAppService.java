@@ -10,6 +10,11 @@ public interface IAppService {
 	 * 
 	 * ***/
 	List<App> getAppList(int pageNo,int pageSize);
+	/**
+	 * 获取app总数
+	 * 
+	 * **/
+	int getTotalApp();
 	/***
 	 * 根据名称获取应用列表
 	 * 

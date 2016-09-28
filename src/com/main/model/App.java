@@ -1,5 +1,9 @@
 package com.main.model;
 
+import com.main.utils.Constance;
+import com.main.utils.TimeUtil;
+import com.main.utils.VerifyUtils;
+
 public class App {
 	    private String app_id;//应用id
 	    private String last_cate_id;//终极分类ID
@@ -61,6 +65,11 @@ public class App {
 			this.app_version = app_version;
 		}
 		public String getApp_update_time() {
+//			if (!"".equals(app_update_time)) {
+//				return TimeUtil.longToDateStr(Long.parseLong(app_update_time),"yyyy-MM-dd");
+//			}else{
+//				return "";
+//			}
 			return app_update_time;
 		}
 		public void setApp_update_time(String app_update_time) {
@@ -85,6 +94,9 @@ public class App {
 			this.app_type = app_type;
 		}
 		public String getApp_logo() {
+			if (!VerifyUtils.isUrl(app_logo)) {
+				app_logo = Constance.BASE_URL+app_logo;
+			}
 			return app_logo;
 		}
 		public void setApp_logo(String app_logo) {

@@ -10,6 +10,10 @@ public interface AppDao {
 	 * 
 	 * ***/
 	List<App> getAppList(int pageno,int pagesize);
+	/*
+	 *  获取app总数
+	 * **/
+	int getTotalApp();
 	/***
 	 * 根据名称获取应用列表
 	 * 

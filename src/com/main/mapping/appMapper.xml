@@ -52,12 +52,12 @@
 		<result column="app_order" property="app_order"/>
 	</resultMap>
 	<select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
-		<!-- select * from t_app_list LIMIT #{0}*#{1},#{1} -->
 		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
-		 app_grade,app_visitors,app_down,app_order from t_app_list limit 0,10
+		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list limit #{0},#{1}
 	</select>
-
-
+	<select id="getTotalApp" resultType="java.lang.Integer">
+		select COUNT(app_id ) from app.appcms_app_list
+	</select>
 
 <!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 

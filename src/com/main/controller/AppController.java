@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 import com.main.model.App;
+import com.main.model.PageBean;
 import com.main.service.IAppService;
+import com.main.utils.Constance;
 
 @Controller
 @RequestMapping(value ="app")
@@ -26,19 +26,24 @@ public class AppController {
 	 * **/
 	@RequestMapping(value = "getAppList.do")
 	public String getAppList(HttpServletRequest request) {
-		String no = request.getParameter("pageno") == null?"":request.getParameter("pageno");
-		String size = request.getParameter("pagesize") == null?"":request.getParameter("pagesize");
-		int pageno = 0, pagesize =10;
-		if (!"".equals(no)) {
-			pageno = Integer.parseInt(no);
-		}
-		if (!"".equals(size)) {
-			pagesize = Integer.parseInt(size);
-		}
-		List<App> apps = appService.getAppList(pageno, pagesize);
+		String no = request.getParameter("pageNo") == null?"":request.getParameter("pageNo");
+		String size = request.getParameter("pageSize") == null?"":request.getParameter("pageSize");
+		PageBean pageBean = new PageBean();
+		pageBean.pageNo ="".equals(no)?1:Integer.parseInt(no);
+		pageBean.pageSize ="".equals(size)?Constance.DEFALT_PAGESIZE:Integer.parseInt(size);
+		List<App> apps = appService.getAppList((pageBean.pageNo-1)*pageBean.pageSize, pageBean.pageSize);
 		if (apps !=null && apps.size()>0) {
+			pageBean.total = getTotalApps();
+			pageBean.totalPage = pageBean.total % pageBean.pageSize == 0
+					?pageBean.total/pageBean.pageSize:pageBean.total/pageBean.pageSize+1;
+			System.out.println("分页信息："+pageBean.toString());
+			request.setAttribute("pageBean", pageBean);
 			request.setAttribute("apps", apps);
 		}
-		return "item_list";
+		return "app";
+	}
+	
+	public int  getTotalApps() {
+		return appService.getTotalApp();
 	}
 }
