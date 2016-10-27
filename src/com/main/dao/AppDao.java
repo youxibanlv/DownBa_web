@@ -2,6 +2,8 @@ package com.main.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.main.model.App;
 
 public interface AppDao {
@@ -18,7 +20,7 @@ public interface AppDao {
 	 * 根据名称获取应用列表
 	 * 
 	 * ***/
-	List<App> getAppListByAppName(String appName);
+	List<App> getAppListByAppName(@Param("appName")String appname);
 	/***
 	 * 根据分类获取应用列表
 	 * 

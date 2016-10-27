@@ -19,7 +19,7 @@ public interface IAppService {
 	 * 根据名称获取应用列表
 	 * 
 	 * ***/
-	List<App> getAppListByAppName(String appName);
+	List<App> getAppListByAppName(String appame);
 	/***
 	 * 根据分类获取应用列表
 	 * 

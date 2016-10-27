@@ -11,6 +11,7 @@
 <title>下吧市场管理中心</title>
 <meta name="Copyright" content="Douco Design." />
 <link href="<%=basePath %>css/public.css" rel="stylesheet" type="text/css">
+<link href="<%=basePath %>css/common.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<%=basePath %>js/jquery.min.js"></script>
 <script type="text/javascript" src="<%=basePath %>js/global.js"></script>
 </head>

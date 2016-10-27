@@ -51,6 +51,10 @@
 		<result column="app_down" property="app_down"/>
 		<result column="app_order" property="app_order"/>
 	</resultMap>
+	<resultMap type="com.main.model.App" id="idAndTitle">
+		<id column = "app_id" property="app_id"/>
+		<result column="app_title" property="app_title"/>
+	</resultMap>
 	<select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
 		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
 		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list limit #{0},#{1}
@@ -58,7 +62,9 @@
 	<select id="getTotalApp" resultType="java.lang.Integer">
 		select COUNT(app_id ) from app.appcms_app_list
 	</select>
-
+	<select id="getAppListByAppName" parameterType="String" resultMap="idAndTitle">
+		select app_id,app_title from app.appcms_app_list where app_title like '%${appName}%'
+	</select>
 <!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
 			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})

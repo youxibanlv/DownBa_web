@@ -23,8 +23,7 @@ public class AppServiceImpl implements IAppService {
 
 	@Override
 	public List<App> getAppListByAppName(String appName) {
-		// TODO Auto-generated method stub
-		return null;
+		return appDao.getAppListByAppName(appName);
 	}
 
 	@Override
