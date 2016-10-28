@@ -14,7 +14,7 @@
 				url:"<%=basePath%>app/getAppByName.do",
 				error : function(XMLHttpRequest, textStatus,
 						errorThrown) {
-					alert("error");
+					alert("error = "+ textStatus);
 				},
 				success : function(data, textStatus) {
 					$("#appTable tr:gt(0)").remove();//删除所有行，第一行除外
@@ -43,15 +43,10 @@
 			$("#appTable").hide();//隐藏表格
 		})
 	};
-	/* function wheelPageCheck(){
+	function wheelPageCheck(){
 		var appid = $("#appid").val();
 		var img = $("#show_img").val();
 		var order = $("#sort").val();
-		$.ajax({
-			
-		});
-		
-		
 		alert("appid = "+ appid+",img="+img+" order="+order)
 		if(appid ==""){
 			alert("请先选择应用");
@@ -61,7 +56,7 @@
 			alert("请先选择图片");
 			return false;
 		}
-	}; */
+	};
 </script>
 <div id="dcMain">
 	<!-- 当前位置 -->
@@ -76,12 +71,12 @@
 				<legend>
 					<font color="red">添加轮播图</font>
 				</legend>
-				<form action="#" method="post" enctype="multipart/form-data"  onsubmit="return wheelPageCheck();">
-					app名称：<input type="text" name="appName" value="" size="20" class="inpMain" id="appName" />
+				app名称：<input type="text" name="appName" value="" size="20" class="inpMain" id="appName" />
+				<button style="width: 50px; height: 20px" onclick="getApp()">查询</button>
+				<br />
+				<br>
+				<form action="<%=basePath%>recommend/addRecommend.do" method="post" enctype="multipart/form-data" onsubmit="return wheelPageCheck();">
 					<input type="hidden" id="appid" name="appid">
-					<button style="width: 50px; height: 20px" onclick="getApp()">查询</button>
-					<br />
-					<br>
 					<table id="appTable" width="100%" border="0" cellpadding="8"cellspacing="0" class="tableBasic" hidden="true">
 						<tr><th>appId</th><th>名称</th>
 						</tr>

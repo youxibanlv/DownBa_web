@@ -22,16 +22,16 @@ public class RecommendController {
 	 * **/
 	@RequestMapping(value="addRecommend.do")
 	public String  addRecommend(HttpServletRequest request) {
-		Recommend recommend = new Recommend();
-		String recommend_type = request.getParameter("recommend_type")==null?"":request.getParameter("recommend_type");
-		String recommend_title = request.getParameter("recommend_title")==null?"":request.getParameter("recommend_title");
-		String recommend_logo = request.getParameter("recommend_logo")==null?"":request.getParameter("recommend_logo");
-		String appId = request.getParameter("appId")==null?"":request.getParameter("appId");
-		recommend.setRecommend_type(Integer.parseInt(recommend_type));
-		recommend.setRecommend_logo(recommend_logo);
-		recommend.setRecommend_title(recommend_title);
-		recommend.setAppId(appId);
-		service.addRecommend(recommend);
+//		Recommend recommend = new Recommend();
+//		String recommend_type = request.getParameter("recommend_type")==null?"":request.getParameter("recommend_type");
+//		String recommend_title = request.getParameter("recommend_title")==null?"":request.getParameter("recommend_title");
+//		String recommend_logo = request.getParameter("recommend_logo")==null?"":request.getParameter("recommend_logo");
+//		String appId = request.getParameter("appId")==null?"":request.getParameter("appId");
+//		recommend.setRecommend_type(Integer.parseInt(recommend_type));
+//		recommend.setRecommend_logo(recommend_logo);
+//		recommend.setRecommend_title(recommend_title);
+//		recommend.setAppId(appId);
+//		service.addRecommend(recommend);
 		return "";
 	}
 	/**
