@@ -5,6 +5,15 @@ import java.util.List;
 import com.main.model.Recommend;
 
 public interface IRecommendService {
+
+	/**
+	 * 根据id查询广告
+	 * **/
+	Recommend getRecommendById(int recommend_id);
+	/**
+	 * 删除广告位
+	 * **/
+	boolean delRecommend(int recommend_id);
 	/**
 	 * 添加广告
 	 * */
@@ -12,7 +21,7 @@ public interface IRecommendService {
 	/**
 	 * 根据广告类型查询广告
 	 * */
-	List<Recommend> getRecommendList(int recommendType);
+	List<Recommend> getRecommendListByType(int recommendType);
 	/**
 	 * 更新广告
 	 * */

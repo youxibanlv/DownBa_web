@@ -8,12 +8,20 @@
 		<result column="recommend_title" property="recommend_title"/>
 		<result column="recommend_logo" property="recommend_logo"/>
 		<result column="appId" property="appId"/>
+		<result column="sort" property="sort"/>
+		<result column="update_time" property="update_time"/>
 	</resultMap>
 	<insert id="addRecommend" parameterType="com.main.model.Recommend">
-		insert into t_recommend(recommend_type,recommend_title,recommend_logo,appId) values 
-		(#{recommend.recommend_type},#{recommend.recommend_title},#{recommend.recommend_logo},#{recommend.appId})
+		insert into t_recommend(recommend_type,recommend_title,recommend_logo,appId,sort,update_time) values 
+		(#{recommend_type},#{recommend_title},#{recommend_logo},#{appId},#{sort},#{update_time})
 	</insert>
-	<select id="getRecommendList" parameterType="java.lang.Integer" resultMap="fullRecommend">
-		select * from t_recommend
+	<select id="getRecommendListByType" parameterType="java.lang.Integer" resultMap="fullRecommend">
+		select * from t_recommend where recommend_type = ${recommend_type} order by sort
+	</select>
+	<delete id="delRecommend" parameterType="java.lang.Integer">
+		delete from t_recommend where recommend_id = ${recommend_id}
+	</delete>
+	<select id="getRecommendById" parameterType="java.lang.Integer" resultMap="fullRecommend">
+		select * from  t_recommend where recommend_id = ${recommend_id}
 	</select>
 </mapper>

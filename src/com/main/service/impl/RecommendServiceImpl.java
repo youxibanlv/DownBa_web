@@ -21,15 +21,27 @@ public class RecommendServiceImpl implements IRecommendService {
 	}
 
 	@Override
-	public List<Recommend> getRecommendList(int recommendType) {
+	public List<Recommend> getRecommendListByType(int recommendType) {
 		// TODO Auto-generated method stub
-		return dao.getRecommendList(recommendType);
+		return dao.getRecommendListByType(recommendType);
 	}
 
 	@Override
 	public boolean updateRecommend(int recommendId) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public boolean delRecommend(int recommend_id) {
+		// TODO Auto-generated method stub
+		return dao.delRecommend(recommend_id);
+	}
+
+	@Override
+	public Recommend getRecommendById(int recommend_id) {
+		// TODO Auto-generated method stub
+		return dao.getRecommendById(recommend_id);
 	}
 
 }
