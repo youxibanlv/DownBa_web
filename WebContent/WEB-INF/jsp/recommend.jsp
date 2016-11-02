@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%request.setCharacterEncoding("UTF-8");
 	Object msg = request.getAttribute("msg");
-	if(msg != null ){
+	if(msg != null && !"".equals(msg)){
 		out.println("<script type ='text/javascript'>alert('"+msg.toString()+"')</script> ");
 	}
 %>
@@ -29,11 +29,8 @@
 								// 解析出data对应的Object数组 
 								$.each(data, function(index, values) {
 									$.each(values, function(index2, value) {
-										$("#appTable").append(
-												"<tr><td>" + value.app_id
-														+ "</td><td>"
-														+ value.app_title
-														+ "</td></tr>"); //动态添加行
+										$("#appTable").append("<tr><td>" + value.app_id + "</td><td>"
+										+ value.app_title + "</td><td><img  width= '60' height='60' src = ' "+value.app_logo+"'/></td></tr>"); //动态添加行
 										$("#appTable").show();
 									});
 								});
@@ -58,6 +55,7 @@
 			$("#appid").val($(this).find("td").eq(0).text());//设置appid
 			$("#appName").val($(this).find("td").eq(1).text());//设置输入app名
 			$("#recommendTitle").val($(this).find("td").eq(1).text());//广告标题，默认app名称
+			$("#recommend_logo").val($(this).find("td").eq(2).find("img").attr("src"));//图标
 			$("#appTable").hide();//隐藏表格
 		})
 	};
@@ -70,60 +68,46 @@
 			alert("请先选择应用");
 			return false;
 		}
-		if (img == "") {
-			alert("请先选择图片");
-			return false;
-		} else {
-			var imgs = img.substring(img.lastIndexOf("."), img.length)
-					.toUpperCase();
-			if (imgs != ".BMP" && imgs != ".PNG" && imgs != ".JPG"
-					&& imgs != ".JPEG") {
-				alert("只能选择 bmp，png，jpg，jpeg格式的图片");
-				return false;
-			}
-		}
-
 	};
 </script>
 <div id="dcMain">
 	<!-- 当前位置 -->
 	<div id="urHere">
-		下吧市场管理中心<b></b><strong>首页轮播图设置</strong>
+		下吧市场管理中心<b></b><strong>首页精品推荐设置</strong>
 	</div>
 	<div class="mainBox imgModule">
-		<h3 align="center">首页轮播图设置</h3>
+		<h3 align="center">精品推荐</h3>
 		<table style="width: 100%; border: 1px" class="tableBasic">
 			<tr>
-				<th style="width: 40%; height: 40px"><font style="font-size: 20px">添加轮播图</font></th>
-				<th><font style="font-size: 20px">轮播图列表</font></th>
+				<th style="width: 40%; height: 40px"><font style="font-size: 20px">添加精品推荐</font></th>
+				<th><font style="font-size: 20px">精品推荐列表</font></th>
 			</tr>
 			<tr>
 				<td valign="top">
 					<fieldset >
 						<legend>
-							<font color="red">添加轮播图</font>
+							<font color="red">添加精品推荐</font>
 						</legend>
 						app名称：<input type="text" name="appName" value="" size="20"class="inpMain" id="appName" />
 						<button style="width: 50px; height: 20px" onclick="getApp()">查询</button>
 						<br /> <br>
-						<form action=" <%=basePath %>recommend/addRecommend.do"
-							method="post" enctype="multipart/form-data"
+						<form action=" <%=basePath %>recommend/addRecommend.do"method="post" enctype="multipart/form-data"
 							onsubmit="return wheelPageCheck();">
-							<input type="hidden" id="appid" name="appId"> <input
-								type="hidden" id="recommend_type" name="recommend_type"
-								value="1"> <input type="hidden" id="recommendTitle"
-								name="recommend_title">
+							<input type="hidden" id="appid" name="appId" /> 
+							<input type="hidden" id="recommend_type" name="recommend_type" value="2"/> 
+							<input type="hidden" id="recommendTitle" name="recommend_title">
+							<input type="hidden" id="recommend_logo" name="recommend_logo"/>
 							<table id="appTable" width="100%" border="0" cellpadding="8"
 								cellspacing="0" class="tableBasic" hidden="true">
 								<tr>
 									<th>appId</th>
 									<th>名称</th>
+									<th>图标</th>
 								</tr>
 							</table>
-							广告图片:<input type="file" id="show_img" name="recommend_logo"
-								class="inpFlie" accept="image/*" placeholder="建议使用png格式" /><br>
-							<br> 排序：<input type="text" id="sort" value="5" size="20" name="sort"
-								class="inpMain" maxlength="1" pattern="[0-9]" /><br> <br>
+							<input type="hidden" id="show_img" name="recommend_logo"/>
+							排序：<input type="text" id="sort" value="5" size="20" name="sort"
+								class="inpMain" maxlength="1" pattern="[0-99]" /><br> <br>
 							<input name="submit" class="btn" type="submit" value="提交"
 								width="100%">
 						</form>

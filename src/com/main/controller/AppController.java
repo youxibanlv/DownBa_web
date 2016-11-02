@@ -51,6 +51,10 @@ public class AppController {
 			System.out.println("分页信息："+pageBean.toString());
 			request.setAttribute("pageBean", pageBean);
 			request.setAttribute("apps", apps);
+			request.setAttribute("resultCode", 0);
+		}else{
+			request.setAttribute("resultCode", 1);
+			request.setAttribute("errorMsg", "没有查询到相关应用，请重新输入");
 		}
 		return "app";
 	}
@@ -64,8 +68,14 @@ public class AppController {
 		List<App> apps = appService.getAppListByAppName(appName);
 		Map<String, Object> map = new HashMap<>();
 		if (apps!= null && apps.size()>0) {
-			map.put("success", true);
+			for(App app:apps){
+				app.setApp_logo(app.getApp_logo());
+			}
+			map.put("resultCode", 0);
 			map.put("data", apps);
+		}else{
+			map.put("resultCode", 1);
+			map.put("errorMsg", "没有查询到相关应用，请重新输入");
 		}
 		Gson gson = new Gson();
 		try {
