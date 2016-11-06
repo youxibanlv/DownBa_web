@@ -3,6 +3,7 @@ package com.main.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.support.DaoSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,25 +30,25 @@ public class AppServiceImpl implements IAppService {
 	@Override
 	public List<App> getAppListByCateId(int cateId) {
 		// TODO Auto-generated method stub
-		return null;
+		return appDao.getAppListByCateId(cateId);
 	}
 
 	@Override
 	public App getAppByAppId(int appId) {
 		// TODO Auto-generated method stub
-		return null;
+		return appDao.getAppByAppId(appId);
 	}
 
 	@Override
 	public boolean addApp(App app) {
 		// TODO Auto-generated method stub
-		return false;
+		return appDao.addApp(app);
 	}
 
 	@Override
 	public boolean deleteApp(int appId) {
 		// TODO Auto-generated method stub
-		return false;
+		return appDao.deleteApp(appId);
 	}
 
 	@Override
@@ -66,6 +67,12 @@ public class AppServiceImpl implements IAppService {
 			count = 0;
 		}
 		return count;
+	}
+
+	@Override
+	public List<App> getAppByAppIdStr(String isString) {
+		// TODO Auto-generated method stub
+		return appDao.getAppByAppIdStr(isString);
 	}
 
 }

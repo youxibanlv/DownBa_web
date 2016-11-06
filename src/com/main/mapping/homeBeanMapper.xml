@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace = "com.main.dao.HomeBeanDao">
+	<resultMap type="com.main.model.HomeBean" id="all">
+		<id column="id" property="id"/>
+		<result column="homeBeanType" property="homeBeanType"/>
+		<result column="homeBeanTitle" property="homeBeanTitle"/>
+		<result column="homeBeanLogo" property="homeBeanLogo"/>
+		<result column="appIds" property="appIds"/>
+		<result column="updateTime" property="updateTime"/>
+	</resultMap>
+	<insert id="addHomeBean" parameterType="com.main.model.HomeBean">
+		insert into down_bar.t_home(homeBeanType,homeBeanTitle,homeBeanLogo,appIds,updateTime) 
+			values(#{homeBean.homeBeanType},#{homeBean.homeBeanTitle},#{homeBean.homeBeanLogo},
+			#{homeBean.appIds},#{homeBean.updateTime})
+	</insert>
+	<select id="getList" parameterType="java.lang.Integer" resultMap="all">
+		select * from down_bar.t_home limit #{pageno},#{pagesize}
+	</select>
+	<select id="getTotalHomeBean" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select COUNT(id ) from down_bar.t_home where 1=1
+		<if test="homeBeanType != -1"> and homeBeanType = #{homeBeanType}</if>
+	</select>
+	<!-- <select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list limit #{0},#{1}
+	</select>
+	<select id="getTotalApp" resultType="java.lang.Integer">
+		select COUNT(app_id ) from app.appcms_app_list
+	</select>
+	<select id="getAppListByAppName" parameterType="String" resultMap="idAndTitle">
+		select app_id,app_title,app_logo from app.appcms_app_list where app_title like '%${appName}%'
+	</select> -->
+<!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
+		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
+			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})
+	</insert>
+	<select id="findById" parameterType = "int" resultType="com.main.model.User">
+		select * from t_user where uid =#{uid}
+	</select>
+	<select id="findAll" resultType="com.main.model.User">
+		select * from t_user
+	</select> -->
+</mapper>

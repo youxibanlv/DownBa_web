@@ -105,6 +105,9 @@ public class TimeUtil {
     }
     /******long转时间****/
     public static String longToDateStr(long m,String formart){
+    	if (formart == null) {
+			formart = "yyyy年MM月dd日hh:mm";
+		}
         DateFormat sdf = new SimpleDateFormat(formart);
         Date date = new Date(m);
         System.out.println(sdf.format(date));

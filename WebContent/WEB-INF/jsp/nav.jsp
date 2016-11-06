@@ -34,7 +34,7 @@
 <div id="dcLeft">
 	<div id="menu">
 		<ul class="top">
-			<li><a href="#"><i class="home"></i><em>管理首页</em></a></li>
+			<li><a href="<%=basePath%>home/iniHomePage.do"><i class="home"></i><em>管理首页</em></a></li>
 		</ul>
 		<ul>
 			<li><a href="<%=basePath%>recommend/getRecommendList.do?recommend_type=1"><i class="show"></i><em>首页轮播图设置</em></a></li>
