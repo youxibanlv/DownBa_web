@@ -69,8 +69,9 @@
 	<select id="getAppByAppId" parameterType="Integer" resultMap="idAndTitle">
 		select app_id,app_title,app_logo from app.appcms_app_list where app_id = #{app_id}
 	</select>
-	<select id="getAppByAppIdStr" parameterType="List" resultMap="idAndTitle">
-		select app_id,app_title,app_logo from app.appcms_app_list where app_id in (${idString})
+	<select id="getAppByAppIdStr" parameterType="List" resultMap="appResult">
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list where app_id in (${idString})
 	</select>
 <!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 

@@ -17,12 +17,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.main.controller.AdminController;
+import com.main.model.App;
+import com.main.model.HomeBean;
 import com.main.model.Recommend;
 import com.main.model.mobile.HttpConstance;
+import com.main.model.mobile.request.HomeBeanReq;
 import com.main.model.mobile.request.RecommendReq;
+import com.main.model.mobile.response.HomeBeanRsp;
 import com.main.model.mobile.response.RecommendRsp;
 import com.main.service.IAppService;
+import com.main.service.IHomeBeanService;
 import com.main.service.IRecommendService;
+import com.main.utils.HttpUtils;
 import com.main.utils.NumberUtil;
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
@@ -36,10 +42,37 @@ public class AppService {
 	private IAppService appService;
 	@Autowired
 	private IRecommendService recommendService;
+	@Autowired
+	private IHomeBeanService homeBeanService;
 
 	private Gson gson = new Gson();
+	@RequestMapping(value="getHomeBeans")
+	public void getHomeBeans(@RequestBody HomeBeanReq req,HttpServletResponse response){
+		HomeBeanRsp rsp = null;
+		if (req != null) {
+			rsp = new HomeBeanRsp();
+			HomeBeanReq.RequestParam param = req.requestParams;
+			int pageNo = param.pageNo;
+			int pagesize = param.pageSize;
+			List<HomeBean> beans = homeBeanService.getList(pageNo, pagesize, -1);
+			if (beans!= null && beans.size()>0) {
+				for(HomeBean bean :beans){
+					bean.setApps(appService.getAppByAppIdStr(bean.getAppIds()));
+				}
+				rsp.resultData.homeBeans = beans;
+				rsp.result = HttpConstance.HTTP_SUCCESS;
+			}else{
+				rsp.failReason = "没有查询到相关资源";
+			}
+		}else{
+			// 请求参数错误
+			rsp = new HomeBeanRsp();
+			rsp.failReason = "请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
 
-	@RequestMapping(value = "getRecommend.do")
+	@RequestMapping(value ="getRecommend.do")
 	public void getRecommend(@RequestBody RecommendReq recommendReq, HttpServletResponse response) {
 		RecommendRsp rsp = null;
 		if (recommendReq != null) {
@@ -63,18 +96,7 @@ public class AppService {
 			rsp.failReason = "请求参数错误";
 			rsp.result = 1;
 		}
-		try {
-			response.setCharacterEncoding("UTF-8");
-			PrintWriter writer = response.getWriter();
-			writer.write(gson.toJson(rsp));
-			System.out.println("*************************");
-			System.out.println(gson.toJson(rsp));
-			System.out.println("*************************");
-			writer.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		HttpUtils.sendRsp(response, rsp);
 
 	}
 }

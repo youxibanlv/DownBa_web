@@ -4,7 +4,7 @@ package com.main.model.mobile;
  * Created by strike on 16/5/31.
  */
 public class BaseResponse {
-    public int result;
+    public int result =1;
     public String failReason;
     public String cmdType;
     public String methodName;

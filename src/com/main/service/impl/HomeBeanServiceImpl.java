@@ -16,8 +16,8 @@ public class HomeBeanServiceImpl implements IHomeBeanService {
 	private HomeBeanDao dao;
 	@Override
 	public List<HomeBean> getList(int pageno, int pagesize,int homeBeanType) {
-		// TODO Auto-generated method stub
-		return dao.getList(pageno, pagesize,homeBeanType);
+		
+		return dao.getList((pageno-1)*pagesize, pagesize,homeBeanType);
 	}
 
 	@Override

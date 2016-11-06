@@ -62,9 +62,6 @@
 					"</td><td><img  width= '40' height='40' src = ' "+appLogo+"'/></td><td onclick='del(this)'>移除</td></tr>"); //动态添加行
 			$("#homeBeanTable").show();
 			$("#appTable").hide();
-			//设置提交的appids
-			var appids = $("#appids").val();
-			$("#appids").val(appids + appid+",");//设置appid
 		})
 	};
 	function del(src){
@@ -82,33 +79,18 @@
 		appids = appids.length>0?appids.substring(0,appids.length-1):"";
 		if(homeBeanType ==0){
 			alert("请选择类型");
+			return false;
 		}else if(homeBeanTitle == ""){
 			alert("请输入标题")
+			return false;
 		}else if(appids == ""){
 			alert ("请选择应用")
+			return false
 		}else{
-			$.ajax({
-				data:{"homeBeanType":homeBeanType,"homeBeanTitle":homeBeanTitle,"appids":appids},
-				type:"POST",
-				dataType:'json',
-				contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-				url:"<%=basePath%>home/addHomeBean.do",
-				error:function(){
-					
-				},
-				success:function(data){
-					/* if(data.success){
-						$("#homeBeanTable  tr").remove();
-						$("#homeBeanType ").val("0");
-						$("#homeBeanTitle").val("");
-						$("#appName").val("");
-					}*/
-					$.post("<%=basePath%>home/iniHomePage.do");
-					alert(data.msg); 
-				}
-			});
+			$("#appids").val("");
+			$("#appids").val(appids);
 		}
-	};
+	}
 	function showAddapp(){
 		$("#showAppEdit").show();
 	}
@@ -122,7 +104,7 @@
 		<center><font style="font-size: 20px;">除了轮播图，都可以在这里设置</font></center><br/>
 		<table style="width: 100%; border: 1px" class="tableBasic">
 			<tr>
-				<th style="width: 40%; height: 40px"><font style="font-size: 20px">添加首页内容</font></th>
+				<th style="width: 30%; height: 40px"><font style="font-size: 20px">添加首页内容</font></th>
 				<th><font style="font-size: 20px">已有的首页列表</font></th>
 			</tr>
 			<tr>
@@ -131,16 +113,24 @@
 						<legend>
 							<font color="red">添加首页内容</font>
 						</legend>
-						
-						类 &nbsp; &nbsp; &nbsp;型：
+						<form action="<%=basePath%>home/addHomeBean.do" onsubmit="return check();">
+							类 &nbsp; &nbsp; &nbsp;型：
 						   <select name="homeBeanType" id="homeBeanType" onchange="showHomeBeanTable();">
 								<option value="0">-请选择-</option>
 								<option value="1">-精品推荐类型-</option>
 								<option value="2">-普通推荐类型-</option>
 								<option value="3">-专题类型-</option>
 							</select><br/><br/>
-						标 &nbsp; &nbsp; &nbsp;题：
-						<input type="text" name ="homeBeanTitle" id="homeBeanTitle" placeholder="请输入标题" class="inpMain"/><br/><br/>
+							标 &nbsp; &nbsp; &nbsp;题：
+							<input type="text" name ="homeBeanTitle" id="homeBeanTitle" placeholder="请输入标题" class="inpMain"/><br/><br/>
+							<input type="hidden" name="appids" id="appids">
+							<!-- 已添加的app列表 -->
+						<font color="red">已选择的App列表：(精品推荐3个，普通推荐5个)</font><br>
+							<table id="homeBeanTable" width="100%" border="0" cellpadding="8"
+								cellspacing="0" class="tableBasic">
+							</table>
+							<input name="submit" class="btn" type="submit" value="提交" width="100%"class="inpMain">
+						</form>
 						<!-- 添加app控件 -->
 						<div id="showAppEdit">
 							app名称：<input type="text" name="appName" value="" size="20"class="inpMain" id="appName" />
@@ -150,24 +140,17 @@
 								cellspacing="0" class="tableBasic" hidden="true">
 							</table>
 						</div>
-						<!-- 已添加的app列表 -->
-						<font color="red">已添加的App列表：(精品推荐建议三个，普通推荐5个)</font><br>
-						<table id="homeBeanTable" width="100%" border="0" cellpadding="8"
-								cellspacing="0" class="tableBasic">
-						</table>	
-						<br><br/>
-						<input name="submit" class="btn" type="submit" value="提交" width="100%" onclick="check();">
 					</fieldset>
 				</td>
 				<td valign="top">
 					<div class="pager" style="background-color: lightgray;vertical-align: center;">
 						总计 ${pageBean.total}个记录，共 ${pageBean.totalPage } 页，当前第
 						${pageBean.pageNo} 页 | <a
-							href="<%=basePath%>app/getAppList.do?pageNo=1">第一页</a> <a
-							href="<%=basePath%>app/getAppList.do?pageNo=${pageBean.pageNo-1<1?1:pageBean.pageNo-1}">上一页</a>
+							href="<%=basePath%>home/iniHomePage.do?pageNo=1">第一页</a> <a
+							href="<%=basePath%>home/iniHomePage.do?pageNo=${pageBean.pageNo-1<1?1:pageBean.pageNo-1}">上一页</a>
 						<a
-							href="<%=basePath%>app/getAppList.do?pageNo=${pageBean.pageNo+1>pageBean.totalPage?pageBean.totalPage:pageBean.pageNo+1}">下一页</a>
-						<a href="<%=basePath%>app/getAppList.do?pageNo=${pageBean.totalPage}">最末页</a>
+							href="<%=basePath%>home/iniHomePage.do?pageNo=${pageBean.pageNo+1>pageBean.totalPage?pageBean.totalPage:pageBean.pageNo+1}">下一页</a>
+						<a href="<%=basePath%>home/iniHomePage.do?pageNo=${pageBean.totalPage}">最末页</a>
 					</div>
 					<table style="width: 100%; border: 1px;" class="tableOnebor">
 						<tr style="width: 100%;height: 30px">
@@ -176,6 +159,7 @@
 							<td width="30" align="center">广告图</td>
 							<td width="150" align="center">app列表</td>
 							<td width="50" align="center">更新时间</td>
+							<td width="30" align="center">排序</td>
 							<td width="80" align="center">操作</td>
 						</tr>
 						<c:forEach items="${beans }" var="homeBean" varStatus="status">
@@ -193,8 +177,9 @@
 								</c:forEach>
 							</td>
 							<td width="50" align="center">${homeBean.updateTime }</td>
+							<td width="30" align="center">${homeBean.sort }</td>
 							<td width="80" align="center">
-							<a href="<%=basePath %>recommend/delRecommend.do?recommend_id=${homeBean.id }">
+							<a href="<%=basePath %>home/delHomeBean.do?id=${homeBean.id }">
 								删除</a></td>
 						</tr>
 						</c:forEach>

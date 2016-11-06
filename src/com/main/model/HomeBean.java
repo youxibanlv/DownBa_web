@@ -14,6 +14,7 @@ public class HomeBean {
 	private String homeBeanLogo;//首页元素的图标url，只有 专题类型才有
 	private String appIds;//app，或 资讯id的字符串，用“，”分隔
 	private String updateTime;//更新时间
+	private Integer sort;//排序，排序，数值越小越靠前
 	private List<App> apps = new ArrayList<>();
 	public int getId() {
 		return id;
@@ -45,7 +46,7 @@ public class HomeBean {
 	public void setAppIds(String appIds) {
 		this.appIds = appIds;
 	}
-	public HomeBean(int id, int homeBeanType, String homeBeanTitle, String homeBeanLogo, String appIds,String updateTime) {
+	public HomeBean(int id, int homeBeanType, String homeBeanTitle, String homeBeanLogo, String appIds,String updateTime,int sort) {
 		super();
 		this.id = id;
 		this.homeBeanType = homeBeanType;
@@ -53,6 +54,7 @@ public class HomeBean {
 		this.homeBeanLogo = homeBeanLogo;
 		this.appIds = appIds;
 		this.updateTime = updateTime;
+		this.sort = sort;
 	}
 	public HomeBean() {
 		super();
@@ -68,6 +70,12 @@ public class HomeBean {
 	}
 	public void setApps(List<App> apps) {
 		this.apps = apps;
+	}
+	public int getSort() {
+		return sort;
+	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
 	}
 	
 	

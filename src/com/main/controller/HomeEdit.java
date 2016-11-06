@@ -1,10 +1,6 @@
 package com.main.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,32 +31,57 @@ public class HomeEdit {
 	@Autowired
 	private IAppService appService;
 	
-	private Gson gson = new Gson();
-	
-	@RequestMapping(value="iniHomePage.do")
-	public String initHomePage(HttpServletRequest request){
-		String no = request.getParameter("pageNo") == null?"":request.getParameter("pageNo");
-		String size = request.getParameter("pageSize") == null?"":request.getParameter("pageSize");
-		Map<String, Object> map = new HashMap<>();
-		PageBean pageBean = new PageBean();
-		pageBean.pageNo ="".equals(no)?1:Integer.parseInt(no);
-		pageBean.pageSize ="".equals(size)?Constance.DEFALT_PAGESIZE:Integer.parseInt(size);
-		List<HomeBean> beans = service.getList(0, 10,-1);
-		if (beans != null && beans.size()>0) {
-			for(HomeBean bean:beans){//查询出app图标
-				bean.setApps(appService.getAppByAppIdStr(bean.getAppIds()));
+	@RequestMapping(value="delHomeBean.do")
+	public String delHomeBean(HttpServletRequest request){
+		String idstr = request.getParameter("id");
+		int id = NumberUtil.parseToInt(idstr);
+		if (id!= -1) {
+			if (service.deleteHomeBean(id)) {
+				request.setAttribute("msg", "删除成功！");
+			}else{
+				request.setAttribute("msg", "删除失败！");
 			}
 		}
-		map.put("beans", beans);
-		 pageBean.total = service.getTotalHomeBean(-1);
-		pageBean.totalPage = pageBean.total % pageBean.pageSize == 0
-				?pageBean.total/pageBean.pageSize:pageBean.total/pageBean.pageSize+1;
+		PageBean pageBean = getPageBean(1, Constance.DEFALT_PAGESIZE);
+		List<HomeBean> beans = getBeans(pageBean.pageNo, pageBean.pageSize, -1);
 		request.setAttribute("pageBean", pageBean);
 		request.setAttribute("beans", beans);
 		return "homeEdit";
 	}
+	//获取分页对象
+	private PageBean getPageBean(int pageNO,int pageSize){
+		PageBean pageBean = new PageBean();
+		pageBean.pageNo = pageNO;
+		pageBean.pageSize = pageSize;
+		pageBean.total = service.getTotalHomeBean(-1);
+		pageBean.totalPage = pageBean.total % pageBean.pageSize == 0
+				?pageBean.total/pageBean.pageSize:pageBean.total/pageBean.pageSize+1;
+		return pageBean;
+	}
+	//分页获取首页元素的集合
+	private List<HomeBean> getBeans(int pageNo,int pageSize,int type){
+		List<HomeBean> beans=service.getList(pageNo, pageSize, type);
+		if (beans!= null && beans.size()>0) {
+			for(HomeBean bean:beans){//查询出app图标
+				bean.setApps(appService.getAppByAppIdStr(bean.getAppIds()));
+			}
+		}
+		return beans;
+	}
+	//获取首页列表
+	@RequestMapping(value="iniHomePage.do")
+	public String initHomePage(HttpServletRequest request){
+		String no = request.getParameter("pageNo") == null?"":request.getParameter("pageNo");
+		String size = request.getParameter("pageSize") == null?"":request.getParameter("pageSize");
+		PageBean pageBean = getPageBean("".equals(no)?1:Integer.parseInt(no), "".equals(size)?Constance.DEFALT_PAGESIZE:Integer.parseInt(size));
+		List<HomeBean> beans = getBeans(pageBean.pageNo, pageBean.pageSize,-1);
+		request.setAttribute("pageBean", pageBean);
+		request.setAttribute("beans", beans);
+		return "homeEdit";
+	}
+	//添加首页元素
 	@RequestMapping(value="addHomeBean.do")
-	public void addHomBean(HttpServletRequest request,HttpServletResponse response){
+	public String addHomBean(HttpServletRequest request,HttpServletResponse response){
 		String type = request.getParameter("homeBeanType");
 		String title = request.getParameter("homeBeanTitle");
 		String idString = request.getParameter("appids");
@@ -70,31 +91,24 @@ public class HomeEdit {
 			idString = TextUtils.sbuByLength(idString, ",", 3);
 		}
 		HomeBean bean = new HomeBean();
-		Map<String, Object> map = new HashMap<>();
 		if (type!=null && title != null && idString != null) {
 			bean.setHomeBeanTitle(title);
 			bean.setHomeBeanType(NumberUtil.parseToInt(type));
 			bean.setAppIds(idString);
+			bean.setSort(0);
 			bean.setUpdateTime(TimeUtil.longToDateStr(System.currentTimeMillis(), null));
 			if (service.addHomeBean(bean)) {
-				map.put("success", true);
-				map.put("msg", "添加成功");
+				request.setAttribute("msg", "添加成功");
 			}else{
-				map.put("success", false);
-				map.put("msg", "添加失败,请重试");
+				request.setAttribute("msg", "添加失败,请重试");
 			}
 		}else{
-			map.put("success", false);
-			map.put("msg", "参数错误！");
+			request.setAttribute("msg", "参数错误！");
 		}
-		try {
-			response.setCharacterEncoding("UTF-8");
-			PrintWriter writer = response.getWriter();
-			writer.write(gson.toJson(map));
-			writer.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		List<HomeBean> beans = getBeans(0, 10,-1);
+		PageBean pageBean = getPageBean(1, Constance.DEFALT_PAGESIZE);
+		request.setAttribute("pageBean", pageBean);
+		request.setAttribute("beans", beans);
+		return "homeEdit";
 	}
 }

@@ -18,6 +18,9 @@ public class TextUtils {
 	 *  @param length 期待的id个数
 	 * */
 	public static String sbuByLength(String string,String c,int length){
+		if (string == null || "".equals(string)) {
+			return null;
+		}
 		String[]strArray= string.split(c);
 		String str ="";
 		if (strArray.length>length) {

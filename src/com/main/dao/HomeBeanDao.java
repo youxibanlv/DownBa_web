@@ -15,12 +15,12 @@ public interface HomeBeanDao {
 
 	List<HomeBean> getListByType(@Param("homeBeanType") int homeBeanType);
 
-	HomeBean getBeanById(@Param("homeBeanId") int id);
+	HomeBean getBeanById(@Param("id") int id);
 
 	boolean addHomeBean(@Param("homeBean") HomeBean bean);
 
-	boolean deleteHomeBean(@Param("homeBeanId") int id);
+	boolean deleteHomeBean(@Param("id") int id);
 
-	boolean updateHomeBean(@Param("homeBeanId") HomeBean bean);
+	boolean updateHomeBean(@Param("id") HomeBean bean);
 
 }
