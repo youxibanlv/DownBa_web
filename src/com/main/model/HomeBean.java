@@ -16,6 +16,7 @@ public class HomeBean {
 	private String updateTime;//更新时间
 	private Integer sort;//排序，排序，数值越小越靠前
 	private List<App> apps = new ArrayList<>();
+	private Subject subject;
 	public int getId() {
 		return id;
 	}
@@ -76,6 +77,12 @@ public class HomeBean {
 	}
 	public void setSort(Integer sort) {
 		this.sort = sort;
+	}
+	public Subject getSubject() {
+		return subject;
+	}
+	public void setSubject(Subject subject) {
+		this.subject = subject;
 	}
 	
 	

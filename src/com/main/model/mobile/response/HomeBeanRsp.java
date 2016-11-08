@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.main.model.HomeBean;
+import com.main.model.PageBean;
 import com.main.model.mobile.BaseResponse;
 
 public class HomeBeanRsp extends BaseResponse{
@@ -15,6 +16,7 @@ public class HomeBeanRsp extends BaseResponse{
     }
     public class ResultData {
        public List<HomeBean> homeBeans = new ArrayList<>();
+       public PageBean pageBean ;
     }
 	
 }

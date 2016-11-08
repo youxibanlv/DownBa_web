@@ -16,7 +16,9 @@ public class HomeBeanServiceImpl implements IHomeBeanService {
 	private HomeBeanDao dao;
 	@Override
 	public List<HomeBean> getList(int pageno, int pagesize,int homeBeanType) {
-		
+		if (pageno<1) {
+			pageno = 1;
+		}
 		return dao.getList((pageno-1)*pagesize, pagesize,homeBeanType);
 	}
 

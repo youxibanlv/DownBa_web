@@ -33,8 +33,8 @@ public class RecommendController {
 	 * **/
 	@RequestMapping(value="delRecommend.do")
 	public String delRecommend(HttpServletRequest request){
-		int id = NumberUtil.parseToInt(request.getParameter("recommend_id"));
-		if (id != -1) {
+		Integer id = NumberUtil.parseToInt(request.getParameter("recommend_id"));
+		if (id != null) {
 			Recommend recommend = service.getRecommendById(id);
 			String logoPath = recommend.getRecommend_logo();
 			String fileName= null; //http://localhost:8080/DownBa_web/userUpload/1477970193551.png
@@ -58,8 +58,6 @@ public class RecommendController {
 			if ( 1==recommend.getRecommend_type()) {
 				return "wheelPage";
 			}else if (2==recommend.getRecommend_type()) {
-				return "recommend";
-			}else if (3==recommend.getRecommend_type()) {
 				return "suspect";
 			}
 		}else {
@@ -116,8 +114,6 @@ public class RecommendController {
 		if (1==recommend.getRecommend_type()) {
 			return "wheelPage";
 		}else if (2== recommend.getRecommend_type()) {
-			return "recommend";
-		}else if (3 == recommend.getRecommend_type()) {
 			return "suspect";
 		}
 		return "index";
@@ -140,8 +136,6 @@ public class RecommendController {
 		if ("1".equals(recommend_type)) {
 			return "wheelPage";
 		}else if ("2".equals(recommend_type)) {
-			return "recommend";
-		}else if ("3".equals(recommend_type)) {
 			return "suspect";
 		}
 		return "index";

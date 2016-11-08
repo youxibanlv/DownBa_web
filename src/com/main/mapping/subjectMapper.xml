@@ -6,30 +6,36 @@
 	id:必须与对应接口的某个对应的方法名一致
 	
  -->
-<mapper namespace = "com.main.dao.HomeBeanDao">
-	<resultMap type="com.main.model.HomeBean" id="all">
+<mapper namespace = "com.main.dao.SubjectDao">
+	<resultMap type="com.main.model.Subject" id="all">
 		<id column="id" property="id"/>
-		<result column="homeBeanType" property="homeBeanType"/>
-		<result column="homeBeanTitle" property="homeBeanTitle"/>
-		<result column="homeBeanLogo" property="homeBeanLogo"/>
-		<result column="appIds" property="appIds"/>
+		<result column="title" property="title"/>
+		<result column="des" property="des"/>
+		<result column="logo" property="logo"/>
+		<result column="idString" property="idString"/>
 		<result column="updateTime" property="updateTime"/>
+		<result column="sort" property="sort"/>
 	</resultMap>
-	<insert id="addHomeBean" parameterType="com.main.model.HomeBean">
-		insert into down_bar.t_home(homeBeanType,homeBeanTitle,homeBeanLogo,appIds,updateTime,sort) 
-			values(#{homeBean.homeBeanType},#{homeBean.homeBeanTitle},#{homeBean.homeBeanLogo},
-			#{homeBean.appIds},#{homeBean.updateTime},#{homeBean.sort})
+	<insert id="add" parameterType="com.main.model.Subject">
+		insert into down_bar.t_subject(title,des,logo,idString,updateTime,sort) 
+			values(#{subject.title},#{subject.des},#{subject.logo},
+			#{subject.idString},#{subject.updateTime},#{subject.sort})
 	</insert>
 	<select id="getList" parameterType="java.lang.Integer" resultMap="all">
-		select * from down_bar.t_home ORDER BY sort DESC,id DESC,updateTime DESC limit #{pageno},#{pagesize};
+		select * from down_bar.t_subject ORDER BY sort ASC,id DESC,updateTime DESC limit #{pageno},#{pagesize};
 	</select>
-	<select id="getTotalHomeBean" parameterType="java.lang.Integer" resultType="java.lang.Integer">
-		select COUNT(id ) from down_bar.t_home where 1=1
-		<if test="homeBeanType != -1"> and homeBeanType = #{homeBeanType}</if>
+	<select id="getTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select COUNT(id ) from down_bar.t_subject
 	</select>
-	<delete id="deleteHomeBean" parameterType="int">
-		DELETE from down_bar.t_home where id = #{id}
+	<delete id="delete" parameterType="int">
+		DELETE from down_bar.t_subject where id = #{id}
 	</delete>
+	<select id="getBeanById" parameterType="int" resultMap="all">
+		select * from down_bar.t_subject where id = #{id}
+	</select>
+	<select id="getListByTitle" parameterType="String" resultMap="all">
+		select id,title,logo from down_bar.t_subject where title like '%${title}%'
+	</select>
 	<!-- <select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
 		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
 		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list limit #{0},#{1}

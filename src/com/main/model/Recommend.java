@@ -2,7 +2,7 @@ package com.main.model;
 
 public class Recommend {
 	private int recommend_id;//推荐位id
-	private int recommend_type;//推荐类型：1为轮播图，2为精品推荐，3为猜你喜欢
+	private int recommend_type;//推荐类型：1为轮播图，2为猜你喜欢
 	private String recommend_title;//推荐为标题，如：精品推荐
 	private String recommend_logo;//推荐位图标，可以为空
 	private String appId;//对应app的id、

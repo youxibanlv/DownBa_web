@@ -37,9 +37,9 @@
 			<li><a href="<%=basePath%>home/iniHomePage.do"><i class="home"></i><em>管理首页</em></a></li>
 		</ul>
 		<ul>
+			<li><a href="<%=basePath%>subject/getList.do"><i class="page"></i><em>专题设置</em></a></li>
 			<li><a href="<%=basePath%>recommend/getRecommendList.do?recommend_type=1"><i class="show"></i><em>首页轮播图设置</em></a></li>
-			<li><a href="<%=basePath%>recommend/getRecommendList.do?recommend_type=2"><i class="page"></i><em>精品推荐设置</em></a></li>
-			<li><a href="<%=basePath%>recommend/getRecommendList.do?recommend_type=3"><i class="system"></i><em>猜你喜欢设置</em></a></li>
+			<li><a href="<%=basePath%>recommend/getRecommendList.do?recommend_type=2"><i class="system"></i><em>猜你喜欢设置</em></a></li>
 			<!-- <li><a href="nav.html"><i class="nav"></i><em>自定义导航栏</em></a></li> -->
 		</ul>
 		<ul>

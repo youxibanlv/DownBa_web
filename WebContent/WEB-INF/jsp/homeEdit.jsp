@@ -11,39 +11,59 @@
 <script type="text/javascript">
 	function getApp() {
 		if($("#appName").val() == ""){
-			alert("请输入app名称");
+			alert("请输入app名称或者专题名称");
 		}else{
+			var homeBeanType = $("#homeBeanType ").val();
+			var url="";
+			if(homeBeanType == 3){
+				url = "<%=basePath%>subject/getBeanByName.do";
+			}else{
+				url = "<%=basePath%>app/getAppByName.do";
+			}
 			$.ajax({
 				data:{"appName":$("#appName").val()},
 				type:"POST",
 				dataType:'json',
 				contentType:'application/x-www-form-urlencoded; charset=UTF-8',
-				url:"<%=basePath%>app/getAppByName.do",
-						error : function(XMLHttpRequest, textStatus,
-								errorThrown) {
-							alert("error = " + textStatus);
-						},
-						success : function(data, textStatus) {
-							if(data.resultCode == 0){
-								$("#appTable tr").remove();//删除所有行，第一行除外
-								// 解析出data对应的Object数组 
-								$.each(data, function(index, values) {
-									$.each(values, function(index2, value) {
-										$("#appTable").append("<tr><td>" + value.app_id + "</td><td>"
-										+ value.app_title + "</td><td><img  width= '60' height='60' src = ' "+value.app_logo+"'/></td></tr>"); //动态添加行
-										$("#appTable").show();
-										$("#homeBeanTable").hide();
-										$("#appName").val("");
-									});
+				url:url,
+				error : function(XMLHttpRequest, textStatus,
+						errorThrown) {
+					alert("error = " + textStatus);
+				},
+				success : function(data, textStatus) {
+					if(data.resultCode == 0){
+						$("#appTable tr").remove();//删除所有行，第一行除外
+						// 解析出data对应的Object数组 
+						if(homeBeanType == 3){
+							$.each(data, function(index, values) {
+								$.each(values, function(index2, value) {
+									$("#appTable").append("<tr><td>" + value.id + "</td><td>"
+									+ value.title + "</td><td><img  width= '60' height='60' src = ' "+value.logo+"'/></td></tr>"); //动态添加行
+									$("#appTable").show();
+									$("#homeBeanTable").hide();
+									$("#appName").val("");
 								});
-								changeBg();
-							}else if(data.resultCode == 1){
-								alert(data.errorMsg);
-								$("#appName").val("");
-							}
-							
-						},
-					});
+							});
+						}else{
+							$.each(data, function(index, values) {
+								$.each(values, function(index2, value) {
+									$("#appTable").append("<tr><td>" + value.app_id + "</td><td>"
+									+ value.app_title + "</td><td><img  width= '60' height='60' src = ' "+value.app_logo+"'/></td></tr>"); //动态添加行
+									$("#appTable").show();
+									$("#homeBeanTable").hide();
+									$("#appName").val("");
+								});
+							});
+						}
+						
+						changeBg();
+					}else if(data.resultCode == 1){
+						alert(data.errorMsg);
+						$("#appName").val("");
+					}
+					
+				},
+			});
 		}
 	}
 	function changeBg() {
@@ -113,9 +133,9 @@
 						<legend>
 							<font color="red">添加首页内容</font>
 						</legend>
-						<form action="<%=basePath%>home/addHomeBean.do" onsubmit="return check();">
+						<form action="<%=basePath%>home/addHomeBean.do" onsubmit="return check();" method="post">
 							类 &nbsp; &nbsp; &nbsp;型：
-						   <select name="homeBeanType" id="homeBeanType" onchange="showHomeBeanTable();">
+						   <select name="homeBeanType" id="homeBeanType">
 								<option value="0">-请选择-</option>
 								<option value="1">-精品推荐类型-</option>
 								<option value="2">-普通推荐类型-</option>
@@ -124,16 +144,19 @@
 							标 &nbsp; &nbsp; &nbsp;题：
 							<input type="text" name ="homeBeanTitle" id="homeBeanTitle" placeholder="请输入标题" class="inpMain"/><br/><br/>
 							<input type="hidden" name="appids" id="appids">
+							 排 &nbsp; &nbsp; &nbsp;序：
+							 <input type="text" id="sort" value="1" size="20" name="sort" class="inpMain" maxlength="1" pattern="[0-9]" /><br>
+							<br>
 							<!-- 已添加的app列表 -->
-						<font color="red">已选择的App列表：(精品推荐3个，普通推荐5个)</font><br>
-							<table id="homeBeanTable" width="100%" border="0" cellpadding="8"
-								cellspacing="0" class="tableBasic">
+						<font color="red">已选择的App列表或专题：(精品推荐3个，普通推荐5个,专题一个)</font><br>
+							<table id="homeBeanTable" width="100%" border="0" cellpadding="8"cellspacing="0" class="tableBasic">
 							</table>
 							<input name="submit" class="btn" type="submit" value="提交" width="100%"class="inpMain">
 						</form>
 						<!-- 添加app控件 -->
 						<div id="showAppEdit">
-							app名称：<input type="text" name="appName" value="" size="20"class="inpMain" id="appName" />
+							app名称或专题：<br>
+							<input type="text" name="appName" value="" size="20"class="inpMain" id="appName" />
 							<button style="width: 50px; height: 20px" onclick="getApp()">查询</button>
 							<br /> <br>
 							<table id="appTable" width="100%" border="0" cellpadding="8"
@@ -155,30 +178,33 @@
 					<table style="width: 100%; border: 1px;" class="tableOnebor">
 						<tr style="width: 100%;height: 30px">
 							<td width="30" align="center">id</td>
-							<td width="30" align="center">标题</td>
-							<td width="30" align="center">广告图</td>
-							<td width="150" align="center">app列表</td>
+							<td width="60" align="center">标题</td>
+							<td width="100" align="center">app列表</td>
 							<td width="50" align="center">更新时间</td>
+							<td width="30" align="center">类型</td>
 							<td width="30" align="center">排序</td>
-							<td width="80" align="center">操作</td>
+							<td width="30" align="center">操作</td>
 						</tr>
 						<c:forEach items="${beans }" var="homeBean" varStatus="status">
 						 <tr>
 						 	<td width="30" align="center">${homeBean.id }</td>
-							<td width="30" align="center">${homeBean.homeBeanTitle }</td>
-							<td width="80" align="center" >
-							<a href="${homeBean.homeBeanLogo }">
-							<img width="60" height="60" src="${homeBean.homeBeanLogo }"alt="广告图"/>
-							</a>
-							</td>
-							<td width="150" align="center">
-								<c:forEach items="${homeBean.apps }" var="app" varStatus="status">
-									<img alt="图标" src="${app.app_logo}" width="30px">
-								</c:forEach>
+							<td width="60" align="center">${homeBean.homeBeanTitle }</td>
+							<td width="100" align="center">
+								<c:choose>
+									<c:when test="${homeBean.homeBeanType == 3}">
+										<img alt="图标" src="${homeBean.homeBeanLogo}" width="80px">
+									</c:when>
+									<c:otherwise>
+										<c:forEach items="${homeBean.apps }" var="app" varStatus="status">
+											<img alt="图标" src="${app.app_logo}" width="30px">
+										</c:forEach>
+									</c:otherwise>
+								</c:choose>
 							</td>
 							<td width="50" align="center">${homeBean.updateTime }</td>
+							<td width="30" align="center">${homeBean.homeBeanType }</td>
 							<td width="30" align="center">${homeBean.sort }</td>
-							<td width="80" align="center">
+							<td width="30" align="center">
 							<a href="<%=basePath %>home/delHomeBean.do?id=${homeBean.id }">
 								删除</a></td>
 						</tr>

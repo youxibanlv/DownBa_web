@@ -94,7 +94,7 @@
 						<form action=" <%=basePath %>recommend/addRecommend.do"method="post" enctype="multipart/form-data"
 							onsubmit="return wheelPageCheck();">
 							<input type="hidden" id="appid" name="appId" /> 
-							<input type="hidden" id="recommend_type" name="recommend_type" value="3"/> 
+							<input type="hidden" id="recommend_type" name="recommend_type" value="2"/> 
 							<input type="hidden" id="recommendTitle" name="recommend_title">
 							<input type="hidden" id="recommend_logo" name="recommend_logo"/>
 							<table id="appTable" width="100%" border="0" cellpadding="8"
