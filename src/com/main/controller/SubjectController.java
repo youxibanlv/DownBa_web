@@ -76,6 +76,7 @@ public class SubjectController {
 				request.setAttribute("msg", "删除失败");
 			}
 		}
+		setBeans(request, 1, Constance.DEFALT_PAGESIZE);
 		return "subject";
 	}
 	
@@ -83,14 +84,7 @@ public class SubjectController {
 	public String getList(HttpServletRequest request){
 		int pageNo = NumberUtil.parseToInt(request.getParameter("pageNo")) == null?1:NumberUtil.parseToInt(request.getParameter("pageNo"));
 		int pageSize = NumberUtil.parseToInt(request.getParameter("pageSize"))==null?Constance.DEFALT_PAGESIZE:NumberUtil.parseToInt(request.getParameter("pageSize"));
-		List<Subject> list = getBeans(pageNo, pageSize);
-		if (list != null && list.size()>0) {
-			PageBean pageBean = HttpUtils.getPageBean(pageNo, pageSize, service.getTotal());
-			request.setAttribute("subjects", list);
-			request.setAttribute("pageBean", pageBean);
-		}else{
-			request.setAttribute("msg", "没有设置专题信息，请添加");
-		}
+		setBeans(request, pageNo, pageSize);
 		return "subject";
 	}
 	
@@ -125,22 +119,22 @@ public class SubjectController {
 		}else{
 			request.setAttribute("msg", "添加失败");
 		}
-		List<Subject> list = getBeans(1, Constance.DEFALT_PAGESIZE);
-		PageBean pageBean = HttpUtils.getPageBean(1, Constance.DEFALT_PAGESIZE, service.getTotal());
-		request.setAttribute("subjects", list);
-		request.setAttribute("pageBean", pageBean);
+		setBeans(request, 1, Constance.DEFALT_PAGESIZE);
 		return "subject";
 	}
 	
 	//分页获取首页元素的集合
-	private List<Subject> getBeans(int pageNo,int pageSize){
+	private void setBeans(HttpServletRequest request,int pageNo,int pageSize){
 		List<Subject> beans=service.getList(pageNo, pageSize);
 		if (beans!= null && beans.size()>0) {
 			for(Subject bean:beans){//查询出app图标
 				bean.setDateTime(TimeUtil.longToDateStr(bean.getUpdateTime(), null));
 				bean.setApps(appService.getAppByAppIdStr(bean.getIdString()));
 			}
+			request.setAttribute("subjects", beans);
+		}else{
+			request.setAttribute("msg", "没有查询到专题信息！");
 		}
-		return beans;
+		HttpUtils.setPageBean(request, 1, Constance.DEFALT_PAGESIZE, service.getTotal());
 	}
 }

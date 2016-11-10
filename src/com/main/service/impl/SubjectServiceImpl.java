@@ -10,20 +10,19 @@ import com.main.dao.SubjectDao;
 import com.main.model.HomeBean;
 import com.main.model.Subject;
 import com.main.service.ISubjectService;
+
 @Service
 @Transactional
 public class SubjectServiceImpl implements ISubjectService {
 	@Autowired
 	private SubjectDao dao;
+
 	@Override
 	public List<Subject> getList(int pageno, int pagesize) {
-		if (pageno>0) {
-			return dao.getList((pageno-1)*pagesize, pagesize);
-		}else{
-			System.out.println("******页码不能小于1*******");
-			return null;
+		if (pageno < 1) {
+			pageno = 1;
 		}
-		
+		return dao.getList((pageno - 1) * pagesize, pagesize);
 	}
 
 	@Override

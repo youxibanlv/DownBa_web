@@ -43,6 +43,10 @@
 			<!-- <li><a href="nav.html"><i class="nav"></i><em>自定义导航栏</em></a></li> -->
 		</ul>
 		<ul>
+			<li><a href="<%=basePath%>version/getVersions.do"><i class="articleCat"></i><em>版本管理</em></a></li>
+			<li><a href="<%=basePath%>channel/getChannels.do"><i class="article"></i><em>渠道管理</em></a></li>
+		</ul>
+		<ul>
 			<li><a href="product_category.html"><i class="productCat"></i><em>App分类</em></a></li>
 			<li><a
 				href="<%=basePath%>app/getAppList.do"><i

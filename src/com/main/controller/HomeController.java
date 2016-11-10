@@ -46,35 +46,28 @@ public class HomeController {
 				request.setAttribute("msg", "删除失败！");
 			}
 		}
-		int total = service.getTotalHomeBean(-1);
-		PageBean pageBean = HttpUtils.getPageBean(1, Constance.DEFALT_PAGESIZE, total);
-		List<HomeBean> beans = getBeans(pageBean.pageNo, pageBean.pageSize, -1);
-		request.setAttribute("pageBean", pageBean);
-		request.setAttribute("beans", beans);
+		setBeans(request, 1, Constance.DEFALT_PAGESIZE, -1);
 		return "homeEdit";
 	}
 	//分页获取首页元素的集合
-	private List<HomeBean> getBeans(int pageNo,int pageSize,int type){
+	private void setBeans(HttpServletRequest request,int pageNo,int pageSize,int type){
 		List<HomeBean> beans=service.getList(pageNo, pageSize, type);
 		if (beans!= null && beans.size()>0) {
 			for(HomeBean bean:beans){//查询出app图标
 				bean.setApps(appService.getAppByAppIdStr(bean.getAppIds()));
 			}
+			request.setAttribute("beans", beans);
+		}else{
+			request.setAttribute("msg", "没有查询到相关信息");
 		}
-		return beans;
+		HttpUtils.setPageBean(request, pageNo, pageSize, service.getTotalHomeBean(-1));
 	}
 	//获取首页列表
 	@RequestMapping(value="iniHomePage.do")
 	public String initHomePage(HttpServletRequest request){
 		int pageNo = NumberUtil.parseToInt(request.getParameter("pageNo")) == null?1:NumberUtil.parseToInt(request.getParameter("pageNo"));
 		int pageSize = NumberUtil.parseToInt(request.getParameter("pageSize"))==null?Constance.DEFALT_PAGESIZE:NumberUtil.parseToInt(request.getParameter("pageSize"));
-		
-		List<HomeBean> beans = getBeans(pageNo, pageSize,-1);
-		int total = service.getTotalHomeBean(-1);
-		PageBean pageBean = HttpUtils.getPageBean(pageNo,pageSize, total);
-		
-		request.setAttribute("pageBean", pageBean);
-		request.setAttribute("beans", beans);
+		setBeans(request, pageNo, pageSize, -1);
 		return "homeEdit";
 	}
 	//添加首页元素
@@ -114,11 +107,7 @@ public class HomeController {
 		}else{
 			request.setAttribute("msg", "参数错误！");
 		}
-		List<HomeBean> beans = getBeans(0, 10,-1);
-		int total = beans.size();
-		PageBean pageBean = HttpUtils.getPageBean(1, Constance.DEFALT_PAGESIZE,total);
-		request.setAttribute("pageBean", pageBean);
-		request.setAttribute("beans", beans);
+		setBeans(request, 1, Constance.DEFALT_PAGESIZE, -1);
 		return "homeEdit";
 	}
 }

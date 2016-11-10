@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.main.dao.AppDao;
 import com.main.model.App;
 import com.main.service.IAppService;
+import com.main.utils.TextUtils;
 @Service
 @Transactional
 public class AppServiceImpl implements IAppService {
@@ -24,7 +25,13 @@ public class AppServiceImpl implements IAppService {
 
 	@Override
 	public List<App> getAppListByAppName(String appName) {
-		return appDao.getAppListByAppName(appName);
+		List<App> list = appDao.getAppListByAppName(appName);
+		if (list!= null && list.size()>0) {
+			for(App app:list){
+				app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
+			}
+		}
+		return list;
 	}
 
 	@Override
@@ -71,8 +78,13 @@ public class AppServiceImpl implements IAppService {
 
 	@Override
 	public List<App> getAppByAppIdStr(String isString) {
-		// TODO Auto-generated method stub
-		return appDao.getAppByAppIdStr(isString);
+		List<App> list = appDao.getAppByAppIdStr(isString);
+		if (list!= null && list.size()>0) {
+			for(App app:list){
+				app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
+			}
+		}
+		return list;
 	}
 
 }

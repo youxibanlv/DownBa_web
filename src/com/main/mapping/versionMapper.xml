@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace = "com.main.dao.VersionDao">
+	<resultMap type="com.main.model.Version" id="all">
+		<id column="id" property="id"/>
+		<result column="version_code" property="version_code"/>
+		<result column="version_name" property="version_name"/>
+		<result column="channel_id" property="channel_id"/>
+		<result column="update_time" property="update_time"/>
+		<result column="version_info" property="version_info"/>
+		<result column="url" property="url"/>
+	</resultMap>
+	<insert id="add" parameterType="com.main.model.Channel">
+		insert into down_bar.t_version(version_code,version_name,channel_id,update_time,version_info,url) 
+			values(#{version.version_code},#{version.version_name},#{version.channel_id},#{version.update_time},
+			#{version.version_info},#{version.url})
+	</insert>
+	<select id="getList" parameterType="java.lang.Integer" resultMap="all">
+		select * from down_bar.t_version ORDER BY update_time DESC limit #{pageno},#{pagesize};
+	</select>
+	<select id="getTotal" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select COUNT(id ) from down_bar.t_version
+	</select>
+	<delete id="delete" parameterType="int">
+		DELETE from down_bar.t_version where id = #{id}
+	</delete>
+	<select id="getByChannel" parameterType="int" resultMap="all">
+		select * from down_bar.t_version where channel_id = #{channelId} ORDER BY version_code DESC limit 0,1;
+	</select>
+	<select id="getListByName" parameterType="String" resultMap="all">
+		select * from down_bar.t_version where version_name like '%${name}%'
+	</select>
+	<select id="getById" parameterType="int" resultMap="all">
+		select * from down_bar.t_version where id = #{id}
+	</select>
+</mapper>

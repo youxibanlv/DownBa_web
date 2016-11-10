@@ -22,6 +22,7 @@ import com.main.model.App;
 import com.main.model.PageBean;
 import com.main.service.IAppService;
 import com.main.utils.Constance;
+import com.main.utils.HttpUtils;
 
 import gson.Gson;
 
@@ -77,15 +78,6 @@ public class AppController {
 			map.put("resultCode", 1);
 			map.put("errorMsg", "没有查询到相关应用，请重新输入");
 		}
-		Gson gson = new Gson();
-		try {
-			response.setCharacterEncoding("UTF-8");
-			PrintWriter writer = response.getWriter();
-			writer.write(gson.toJson(map));
-			writer.flush();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		HttpUtils.sendToAjax(response, map);
 	}
 }
