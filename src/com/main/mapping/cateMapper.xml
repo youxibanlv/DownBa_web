@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace = "com.main.dao.CateDao">
+	<resultMap type="com.main.model.Category" id="full">
+		<id column="cate_id" property="cate_id"/>
+		<result column="parent_id" property="parent_id"/>
+		<result column="cname" property="cname"/>
+		<result column="cimg" property="cimg"/>
+		<result column="cdata" property="cdata"/>
+	</resultMap>
+	<select id="getCategorys" parameterType="java.lang.Integer" resultMap="full">
+		select cate_id,parent_id,cname,cimg,cdata from app.appcms_category where parent_id =#{parentId}
+	</select>
+	<!-- <select id="getTotalApp" resultType="java.lang.Integer">
+		select COUNT(app_id ) from app.appcms_app_list
+	</select>
+	<select id="getAppListByAppName" parameterType="String" resultMap="idAndTitle">
+		select app_id,app_title,app_logo from app.appcms_app_list where app_title like '%${appName}%'
+	</select>
+	<select id="getAppByAppId" parameterType="Integer" resultMap="idAndTitle">
+		select app_id,app_title,app_logo from app.appcms_app_list where app_id = #{app_id}
+	</select>
+	<select id="getAppByAppIdStr" parameterType="List" resultMap="appResult">
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_desc,app_logo,
+		 app_grade,app_visitors,app_down,app_order from app.appcms_app_list where app_id in (${idString})
+	</select> -->
+<!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
+		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
+			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})
+	</insert>
+	<select id="findById" parameterType = "int" resultType="com.main.model.User">
+		select * from t_user where uid =#{uid}
+	</select>
+	<select id="findAll" resultType="com.main.model.User">
+		select * from t_user
+	</select> -->
+</mapper>

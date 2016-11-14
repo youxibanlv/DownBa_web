@@ -16,7 +16,7 @@ public interface AppDao {
 	/*
 	 * 获取app总数
 	 **/
-	int getTotalApp();
+	int getTotalApp(@Param("cateId")int cateId);
 
 	/***
 	 * 根据名称获取应用列表
@@ -28,19 +28,19 @@ public interface AppDao {
 	 * 根据分类获取应用列表
 	 * 
 	 ***/
-	List<App> getAppListByCateId(int cateId);
+	List<App> getAppListByCateId(@Param("orderType")int orderType,@Param("cateId")int cateId,@Param("pageNO")int pageNO,@Param("pageSize")int pageSize);
 
 	/***
 	 * 根据id获取应用列表
 	 * 
 	 ***/
-	App getAppByAppId(@Param("app_id") int appId);
+	App getAppByAppId(@Param("app_id") String appId);
 
 	/***
 	 * 根据id字符串列表获取应用列表
 	 * 
 	 ***/
-	List<App> getAppByAppIdStr(@Param("idString") String isString);
+	List<App> getAppByAppIdStr(@Param("idString") String idString);
 
 	/***
 	 * 添加应用

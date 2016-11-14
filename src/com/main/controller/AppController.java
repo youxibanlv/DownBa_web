@@ -61,7 +61,7 @@ public class AppController {
 	}
 	
 	public int  getTotalApps() {
-		return appService.getTotalApp();
+		return appService.getTotalApp(0);
 	}
 	@RequestMapping(value="getAppByName.do")
 	public void getAppByName(HttpServletRequest request,HttpServletResponse response){

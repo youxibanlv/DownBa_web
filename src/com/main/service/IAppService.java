@@ -17,7 +17,7 @@ public interface IAppService {
 	 * 获取app总数
 	 * 
 	 **/
-	int getTotalApp();
+	int getTotalApp(int cateId);
 
 	/***
 	 * 根据名称获取应用列表
@@ -29,15 +29,15 @@ public interface IAppService {
 	 * 根据分类获取应用列表
 	 * 
 	 ***/
-	List<App> getAppListByCateId(int cateId);
+	List<App> getAppListByCateId(int orderType,int cateId,int pageNO,int pageSize);
 
 	/***
 	 * 根据id获取应用列表
 	 * 
 	 ***/
-	App getAppByAppId(int appId);
+	App getAppByAppId(String appId);
 
-	List<App> getAppByAppIdStr(@Param("idString") String isString);
+	List<App> getAppByAppIdStr(String isString);
 
 	/***
 	 * 添加应用

@@ -1,5 +1,7 @@
 package com.main.model;
 
+import java.util.List;
+
 import com.main.utils.Constance;
 import com.main.utils.TimeUtil;
 import com.main.utils.VerifyUtils;
@@ -34,6 +36,8 @@ public class App {
 	    private String seo_title;//应用SEO标题
 	    private String seo_keywords;//应用SEO关键字
 	    private String seo_desc;//应用SEO描述
+	    private List<String> resource;
+	    private List<Comment> commentList;
 		public String getApp_id() {
 			return app_id;
 		}
@@ -259,6 +263,18 @@ public class App {
 		}
 		public App() {
 			super();
+		}
+		public List<String> getResource() {
+			return resource;
+		}
+		public void setResource(List<String> resource) {
+			this.resource = resource;
+		}
+		public List<Comment> getCommentList() {
+			return commentList;
+		}
+		public void setCommentList(List<Comment> commentList) {
+			this.commentList = commentList;
 		}
 	    
 	    

@@ -16,4 +16,5 @@ public class BaseResponse {
     	this.cmdType = req.cmdType;
     	this.methodName = req.methodName;
     }
+    
 }

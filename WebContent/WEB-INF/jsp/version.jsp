@@ -139,6 +139,7 @@ function getChannel(pageNo,pageSize) {
 							<td width="30" align="center">id</td>
 							<td width="80" align="center">版本名称</td>
 							<td width="50" align="center">版本号</td>
+							<td width="50" align="center">渠道号</td>
 							<td width="80" align="center">apk地址</td>
 							<td width="80" align="center">更新说明</td>
 							<td width="80" align="center">更新时间</td>
@@ -148,10 +149,14 @@ function getChannel(pageNo,pageSize) {
 							<tr>
 								<td width="30" align="center">${version.id }</td>
 								<td width="80" align="center">${version.version_name }</td>
-								<td width="50" align="center">${version.channel_id }</td>
 								<td width="50" align="center">${version.version_code }</td>
-								<td width="80" align="center"><a href=" ${version.url }">${version.url }</a></td>
-								<td width="80" align="center">${version.version_info } </td>
+								<td width="50" align="center">${version.channel_id }</td>
+								<td width="80" style="max-width: 200px" align="center"><a href=" ${version.url }">
+								<textarea rows="5" cols="25">${version.url }</textarea>
+								</a></td>
+								<td width="80" align="center">
+								<textarea rows="5" cols="25">${version.version_info }</textarea>
+								 </td>
 								<td width="80" align="center">${version.dateTime }</td>
 								<td width="80" align="center"><a
 									href="<%=basePath %>version/del.do?id=${version.id }">
