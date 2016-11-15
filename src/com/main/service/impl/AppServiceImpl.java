@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.main.dao.AppDao;
+import com.main.dao.CommentDao;
 import com.main.model.App;
 import com.main.service.IAppService;
 import com.main.utils.Constance;
@@ -17,7 +18,8 @@ import com.main.utils.TextUtils;
 public class AppServiceImpl implements IAppService {
 	@Autowired
 	private AppDao appDao;
-	
+	@Autowired
+	private CommentDao commentDao;
 	@Override
 	public List<App> getAppList(int pageNo, int pageSize) {
 		
@@ -98,6 +100,16 @@ public class AppServiceImpl implements IAppService {
 			}
 		}
 		return list;
+	}
+
+	@Override
+	public App getAppDetails(String appId) {
+		App app = new App();
+		//查询图片列表
+		app.setResource(appDao.getResource(appId));
+		//查询评论列表
+		app.setCommentList(commentDao.getListByAppId(appId));
+		return app;
 	}
 
 }

@@ -6,18 +6,25 @@
 	id:必须与对应接口的某个对应的方法名一致
 	
  -->
-<mapper namespace = "com.main.dao.CateDao">
-	<resultMap type="com.main.model.Category" id="full">
-		<id column="cate_id" property="cate_id"/>
+<mapper namespace = "com.main.dao.InfoDao">
+	<resultMap type="com.main.model.Info" id="full">
+		<id column="info_id" property="info_id"/>
 		<result column="parent_id" property="parent_id"/>
-		<result column="cname" property="cname"/>
-		<result column="cimg" property="cimg"/>
-		<result column="cdata" property="cdata"/>
+		<result column="last_cate_id" property="last_cate_id"/>
+		<result column="info_title" property="info_title"/>
+		<result column="info_img" property="info_img"/>
+		<result column="info_body" property="info_body"/>
+		<result column="info_visitors" property="info_visitors"/>
 	</resultMap>
-	<select id="getCategorys" parameterType="java.lang.Integer" resultMap="full">
-		select cate_id,parent_id,cname,cimg,cdata from app.appcms_category where 1 = 1
-		<if test="parentId == 0 or parentId == 1 or parentId == 2">and parent_id =#{parentId}</if>
-		<if test="parentId > 2 ">and cate_id = #{parentId}</if>
+	<select id="getInfoListByCateId" parameterType="int" resultMap="full">
+		select info_id,parent_id,last_cate_id,info_title,info_img,info_body,info_visitors
+		from app.appcms_info_list  where last_cate_id =#{cateId} and info_img != '' ORDER BY info_update_time DESC limit #{pageNO},#{pageSize}
+	</select>
+	<select id="getInfoById" parameterType="int" resultMap="full">
+		select info_body from app.appcms_info_list where info_id =#{infoId} 
+	</select>
+	<select id="getTotal"  parameterType="int" resultType="int">
+		select count(info_id) from app.appcms_info_list where last_cate_id =#{cateId} and info_img != ''
 	</select>
 	<!-- <select id="getTotalApp" resultType="java.lang.Integer">
 		select COUNT(app_id ) from app.appcms_app_list

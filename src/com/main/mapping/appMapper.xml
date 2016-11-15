@@ -87,6 +87,9 @@
 		 <if test="orderType == 2">ORDER BY app_update_time DESC</if> 
 		 limit #{pageNO},#{pageSize}
 	</select>
+	<select id="getResource" parameterType="String" resultType="String">
+		select resource_url from app.appcms_resource_list where info_app_id = #{app_id}
+	</select>
 <!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
 			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})

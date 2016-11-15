@@ -1,19 +1,20 @@
 package com.main.model;
 
 public class Comment {
-	private int id;
-	private int type;
-	private String content;
-	private int date_add;
-	private int uid;
-	private String uname;
-	private String ip;
-	private String ip_addr;
-	private int parent_id;
-	private int is_check;
-	private int son;
-	private int good;
-	private int bad;
+	 private int comment_id =0;
+	    private int id=0;
+	    private int type=0;
+	    private String content="";
+	    private long date_add=0;
+	    private int uid=0;
+	    private String uname="";
+	    private String ip="";
+	    private String ip_addr="";
+	    private int parent_id=0;
+	    private int is_check=0;
+	    private int son=0;
+	    private int good=0;
+	    private int bad=0;
 	public int getId() {
 		return id;
 	}
@@ -31,12 +32,6 @@ public class Comment {
 	}
 	public void setContent(String content) {
 		this.content = content;
-	}
-	public int getDate_add() {
-		return date_add;
-	}
-	public void setDate_add(int date_add) {
-		this.date_add = date_add;
 	}
 	public int getUid() {
 		return uid;
@@ -92,13 +87,15 @@ public class Comment {
 	public void setBad(int bad) {
 		this.bad = bad;
 	}
-	public Comment(int id, int type, String content, int date_add, int uid, String uname, String ip, String ip_addr,
+	public Comment(int comment_id,int id, int type, String content,long date_add, int uid, String uname, String ip, String ip_addr,
 			int parent_id, int is_check, int son, int good, int bad) {
 		super();
+		this.comment_id = comment_id;
 		this.id = id;
 		this.type = type;
 		this.content = content;
 		this.date_add = date_add;
+		this.setDate_add(date_add);
 		this.uid = uid;
 		this.uname = uname;
 		this.ip = ip;
@@ -111,6 +108,18 @@ public class Comment {
 	}
 	public Comment() {
 		super();
+	}
+	public int getComment_id() {
+		return comment_id;
+	}
+	public void setComment_id(int comment_id) {
+		this.comment_id = comment_id;
+	}
+	public long getDate_add() {
+		return date_add;
+	}
+	public void setDate_add(long date_add) {
+		this.date_add = date_add;
 	}
 	
 	

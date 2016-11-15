@@ -10,26 +10,36 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.main.model.App;
 import com.main.model.Category;
+import com.main.model.Comment;
 import com.main.model.HomeBean;
+import com.main.model.Info;
 import com.main.model.PageBean;
 import com.main.model.Recommend;
-import com.main.model.mobile.BaseResponse;
+import com.main.model.Subject;
 import com.main.model.mobile.HttpConstance;
+import com.main.model.mobile.request.AddCommentReq;
 import com.main.model.mobile.request.AppDetailsReq;
 import com.main.model.mobile.request.GetAppByCateIdReq;
 import com.main.model.mobile.request.GetCategoryReq;
 import com.main.model.mobile.request.HomeBeanReq;
+import com.main.model.mobile.request.InfoReq;
 import com.main.model.mobile.request.RecommendReq;
+import com.main.model.mobile.request.SubjectReq;
+import com.main.model.mobile.response.AddCommentRsp;
 import com.main.model.mobile.response.AppDetailsRsp;
 import com.main.model.mobile.response.GetAppListRsp;
 import com.main.model.mobile.response.GetCategoryRsp;
 import com.main.model.mobile.response.HomeBeanRsp;
+import com.main.model.mobile.response.InfoRsp;
 import com.main.model.mobile.response.RecommendRsp;
+import com.main.model.mobile.response.SubjectRsp;
 import com.main.service.IAppService;
 import com.main.service.ICateService;
+import com.main.service.ICommentService;
 import com.main.service.IHomeBeanService;
 import com.main.service.IRecommendService;
 import com.main.service.ISubjectService;
+import com.main.service.InfoService;
 import com.main.utils.HttpUtils;
 import com.main.utils.NumberUtil;
 
@@ -47,13 +57,96 @@ public class AppService {
 	private ISubjectService subjectService;
 	@Autowired
 	private ICateService cateService;
+	@Autowired
+	private ICommentService commentService;
+	@Autowired
+	private InfoService infoService;
 	
+	//获取专题列表
+	@RequestMapping(value="getSubject.do")
+	public void getSubject(@RequestBody SubjectReq req,HttpServletResponse response){
+		SubjectRsp rsp = null;
+		if (req!= null) {
+			rsp = new SubjectRsp(req);
+			int pageNo = req.requestParams.pageNo;
+			int pageSize =  req.requestParams.pageSize;
+			List<Subject> list = subjectService.getList(pageNo,pageSize);
+			rsp.resultData.subjects=list;
+			rsp.result=0;
+			if (pageNo == 0 || pageNo == 1) {
+				PageBean pageBean = HttpUtils.getPageBean(pageNo, pageSize, subjectService.getTotal());
+				rsp.resultData.pageBean = pageBean;
+			}
+		}else{
+			rsp = new SubjectRsp();
+			rsp.failReason="请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	//获取资讯列表
+	@RequestMapping(value="getInfoList.do")
+	public void getInfoList(@RequestBody InfoReq req,HttpServletResponse response){
+		InfoRsp rsp = null;
+		if (req!= null) {
+			rsp = new InfoRsp(req);
+			//业务逻辑
+			int cate_id = req.requestParams.cate_id;
+			int pageNo = req.requestParams.pageNo;
+			int pageSize = req.requestParams.pageSize;
+			if (pageNo == 0 || pageNo == 1) {
+				int total = infoService.getTotal(cate_id);
+				PageBean pageBean = HttpUtils.getPageBean(pageNo, pageSize, total);
+				rsp.resultData.pageBean = pageBean;
+			}
+			List<Info> list = infoService.getInfoListByCateId(cate_id, pageNo, pageSize);
+			if (list!= null && list.size()>0) {
+				rsp.result= HttpConstance.HTTP_SUCCESS;
+				rsp.resultData.infoList = list;
+			}else{
+				rsp.failReason="没有查询到相关信息";
+			}
+		}else{
+			rsp = new InfoRsp();
+			rsp.failReason="请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	
+	
+	//发表评论
+	@RequestMapping(value="addComment.do")
+	public void addComment(@RequestBody AddCommentReq req,HttpServletResponse response){
+		AddCommentRsp rsp = null;
+		if (req != null) {
+			rsp = new AddCommentRsp(req);
+			Comment comment = req.requestParams.comment;
+			if (comment != null) {
+				if (commentService.add(comment)) {
+					rsp.result = HttpConstance.HTTP_SUCCESS;
+				}else{
+					rsp.failReason = "发表失败";
+				}
+				List<Comment> list = commentService.getListByAppId(String.valueOf(comment.getId()));
+				rsp.resultData.list=list;
+			}else{
+				rsp.failReason="comment == null";
+			}
+		}else {
+			rsp= new AddCommentRsp();
+			rsp.failReason="请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	
+	//查询app的截图列表和评论列表
 	@RequestMapping(value="getAppDetails.do")
 	public void getAppDetails(@RequestBody AppDetailsReq req,HttpServletResponse response){
 		AppDetailsRsp rsp = null;
 		if (req != null) {
 			rsp = new AppDetailsRsp(req);
-			
+			App app = appService.getAppDetails(req.requestParams.app_id);
+			rsp.resultData.app = app;
+			rsp.result=HttpConstance.HTTP_SUCCESS;
 		}else{
 			rsp = new AppDetailsRsp();
 			rsp.failReason="请求参数错误";

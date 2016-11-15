@@ -15,10 +15,12 @@ public class AppDetailsReq extends BaseRequest {
         requestParams = new RequestParam(app_id);
     }
 
-    class RequestParam{
+    public class RequestParam{
+    	public RequestParam() {
+		}
         public String app_id;
-        public RequestParam(String appId){
-            this.app_id = appId;
+        public RequestParam(String app_id){
+            this.app_id = app_id;
         }
     }
 }

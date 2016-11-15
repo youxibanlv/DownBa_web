@@ -22,6 +22,9 @@ public class SubjectServiceImpl implements ISubjectService {
 		if (pageno < 1) {
 			pageno = 1;
 		}
+		if (pagesize == 0) {
+			pagesize = 10;
+		}
 		return dao.getList((pageno - 1) * pagesize, pagesize);
 	}
 

@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import com.main.model.App;
 
 public interface AppDao {
+	//获取图片列表
+	List<String> getResource(@Param("app_id")String appId);
 	/***
 	 * 获取所有应用的列表
 	 * 

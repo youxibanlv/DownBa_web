@@ -2,11 +2,11 @@ package com.main.service;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.main.model.App;
 
 public interface IAppService {
+	//获取app详情
+	App getAppDetails(String appid);
 	/***
 	 * 获取所有应用的列表
 	 * 
