@@ -25,11 +25,6 @@ public class InfoServiceImpl implements InfoService {
 			pageSize = Constance.DEFALT_PAGESIZE;
 		}
 		List<Info> list = dao.getInfoListByCateId(cateId, (pageNO-1)*pageSize, pageSize);
-		if (list!= null && list.size()>0) {
-			for(Info info:list){
-				info.setInfo_body(TextUtils.delHTMLTag(info.getInfo_body()));
-			}
-		}
 		return list;
 	}
 

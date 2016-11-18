@@ -3,6 +3,7 @@ package com.main.controller.mobile.app;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.catalina.deploy.LoginConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -153,7 +154,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-	
+//	根据分类查询app列表
 	@RequestMapping(value="getAppListByCate.do")
 	public void getAppListByCate(@RequestBody GetAppByCateIdReq req,HttpServletResponse response){
 		GetAppListRsp rsp =null;
@@ -181,7 +182,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-	
+//	获取分类列表
 	@RequestMapping(value="getCateByParentId.do")
 	public void getCateByParentId(@RequestBody GetCategoryReq req,HttpServletResponse response){
 		GetCategoryRsp rsp = null;
@@ -203,7 +204,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-
+//获取首页模块
 	@RequestMapping(value="getHomeBeans.do")
 	public void getHomeBeans(@RequestBody HomeBeanReq req,HttpServletResponse response){
 		HomeBeanRsp rsp = null;
@@ -236,7 +237,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-
+//获取推荐内容
 	@RequestMapping(value ="getRecommend.do")
 	public void getRecommend(@RequestBody RecommendReq recommendReq, HttpServletResponse response) {
 		RecommendRsp rsp = null;
@@ -247,9 +248,6 @@ public class AppService {
 			if (recommendType != -1) {
 				List<Recommend> list = recommendService.getRecommendListByType(recommendType);
 				if (list != null && list.size() > 0) {
-					for(Recommend recommend:list){
-						recommend.setApp(appService.getAppByAppId(recommend.getAppId()));
-					}
 					rsp.resultData.recommends = list;
 					rsp.result = HttpConstance.HTTP_SUCCESS;
 				} else {

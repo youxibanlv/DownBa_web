@@ -52,6 +52,7 @@
 		<result column="app_down" property="app_down"/>
 		<result column="app_order" property="app_order"/>
 		<result column="app_recomment" property="app_recomment"/>
+		<result column="seo_keywords" property="seo_keywords"/>
 	</resultMap>
 	<resultMap type="com.main.model.App" id="idAndTitle">
 		<id column = "app_id" property="app_id"/>
@@ -59,8 +60,8 @@
 		<result column="app_logo" property="app_logo"/>
 	</resultMap>
 	<select id="getAppList" parameterType="java.lang.Integer" resultMap="appResult">
-		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_desc,app_logo,
-		 app_grade,app_visitors,app_down,app_order,app_recomment from app.appcms_app_list limit #{0},#{1}
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order,app_recomment,seo_keywords from app.appcms_app_list limit #{0},#{1}
 	</select>
 	<select id="getTotalApp" resultType="java.lang.Integer">
 		select COUNT(app_id ) from app.appcms_app_list where 1 = 1
@@ -75,12 +76,12 @@
 		 app_grade,app_visitors,app_down,app_order,app_recomment from app.appcms_app_list where app_id = #{app_id}
 	</select>
 	<select id="getAppByAppIdStr" parameterType="String" resultMap="appResult">
-		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_desc,app_logo,
-		 app_grade,app_visitors,app_down,app_order,app_recomment from app.appcms_app_list where app_id in (${idString})
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order,app_recomment,seo_keywords from app.appcms_app_list where app_id in (${idString})
 	</select>
 	<select id="getAppListByCateId" parameterType ="int" resultMap="appResult">
-		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_desc,app_logo,
-		 app_grade,app_visitors,app_down,app_order,app_recomment from app.appcms_app_list where 1 = 1 
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order,app_recomment,seo_keywords from app.appcms_app_list where 1 = 1 
 		 <if test="cateId >2 ">and last_cate_id = #{cateId} </if> 
 		 <if test="cateId ==1 or cateId == 2">and last_cate_id in (SELECT cate_id FROM app.appcms_category where parent_id = #{cateId})</if>
 		 <if test="orderType == 1">ORDER BY app_down DESC</if>
@@ -89,6 +90,9 @@
 	</select>
 	<select id="getResource" parameterType="String" resultType="String">
 		select resource_url from app.appcms_resource_list where info_app_id = #{app_id}
+	</select>
+	<select id="getDesc"  parameterType="String" resultType="String">
+		select app_desc from app.appcms_app_list where app_id = #{app_id} 
 	</select>
 <!-- 	<insert id="getAppList" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 

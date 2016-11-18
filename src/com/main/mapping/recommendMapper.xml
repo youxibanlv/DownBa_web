@@ -15,7 +15,7 @@
 		insert into t_recommend(recommend_type,recommend_title,recommend_logo,appId,sort,update_time) values 
 		(#{recommend_type},#{recommend_title},#{recommend_logo},#{appId},#{sort},#{update_time})
 	</insert>
-	<select id="getRecommendListByType" parameterType="java.lang.Integer" resultMap="fullRecommend">
+	<select id="getRecommendListByType" parameterType="java.lang.Integer" resultMap="fullRecommend" useCache="true">
 		select * from t_recommend where recommend_type = ${recommend_type} order by sort
 	</select>
 	<delete id="delRecommend" parameterType="java.lang.Integer">

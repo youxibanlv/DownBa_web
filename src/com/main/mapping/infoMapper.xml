@@ -13,11 +13,11 @@
 		<result column="last_cate_id" property="last_cate_id"/>
 		<result column="info_title" property="info_title"/>
 		<result column="info_img" property="info_img"/>
-		<result column="info_body" property="info_body"/>
 		<result column="info_visitors" property="info_visitors"/>
+		<result column="info_desc" property="info_desc"/>
 	</resultMap>
 	<select id="getInfoListByCateId" parameterType="int" resultMap="full">
-		select info_id,parent_id,last_cate_id,info_title,info_img,info_body,info_visitors
+		select info_id,parent_id,last_cate_id,info_title,info_img,info_visitors,info_desc
 		from app.appcms_info_list  where last_cate_id =#{cateId} and info_img != '' ORDER BY info_update_time DESC limit #{pageNO},#{pageSize}
 	</select>
 	<select id="getInfoById" parameterType="int" resultMap="full">

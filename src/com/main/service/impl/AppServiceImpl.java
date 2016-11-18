@@ -22,18 +22,18 @@ public class AppServiceImpl implements IAppService {
 	private CommentDao commentDao;
 	@Override
 	public List<App> getAppList(int pageNo, int pageSize) {
-		
-		return appDao.getAppList(pageNo, pageSize);
+		if (pageNo<1) {
+			pageNo = 1;
+		}
+		if (pageSize == 0) {
+			pageSize = Constance.DEFALT_PAGESIZE;
+		}
+		return appDao.getAppList((pageNo-1)*pageSize,pageSize);
 	}
 
 	@Override
 	public List<App> getAppListByAppName(String appName) {
 		List<App> list = appDao.getAppListByAppName(appName);
-		if (list!= null && list.size()>0) {
-			for(App app:list){
-				app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
-			}
-		}
 		return list;
 	}
 
@@ -46,18 +46,12 @@ public class AppServiceImpl implements IAppService {
 			pageSize = Constance.DEFALT_PAGESIZE;
 		}
 		List<App> list = appDao.getAppListByCateId(orderType,cateId,(pageNo-1)*pageSize,pageSize);
-		if (list!= null && list.size()>0) {
-			for(App app:list){
-				app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
-			}
-		}
 		return list;
 	}
 
 	@Override
 	public App getAppByAppId(String appId) {
 		App app = appDao.getAppByAppId(appId);
-		app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
 		return app;
 	}
 
@@ -94,11 +88,6 @@ public class AppServiceImpl implements IAppService {
 	@Override
 	public List<App> getAppByAppIdStr(String isString) {
 		List<App> list = appDao.getAppByAppIdStr(isString);
-		if (list!= null && list.size()>0) {
-			for(App app:list){
-				app.setApp_desc(TextUtils.delHTMLTag(app.getApp_desc()));
-			}
-		}
 		return list;
 	}
 
@@ -109,6 +98,8 @@ public class AppServiceImpl implements IAppService {
 		app.setResource(appDao.getResource(appId));
 		//查询评论列表
 		app.setCommentList(commentDao.getListByAppId(appId));
+		//查询app详情
+		app.setApp_desc(appDao.getDesc(appId));
 		return app;
 	}
 

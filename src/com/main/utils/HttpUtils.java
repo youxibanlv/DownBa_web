@@ -11,11 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.main.model.PageBean;
+import com.main.model.User;
 import com.main.model.mobile.BaseResponse;
 
 import gson.Gson;
 
 public class HttpUtils {
+
+	/**
+	 * 根据user生成token
+	 **/
+	public static String generateToken(User user) {
+		String content = user.getUsername() + user.getPassword();
+		return SecurityUtils.encrypt128(content, Constance.CLIENT_SECRET);
+	}
+
 	/**
 	 * 删除服务器文件
 	 * 
@@ -27,7 +37,7 @@ public class HttpUtils {
 	public static boolean delFromServer(HttpServletRequest request, String filePath) {
 		if (filePath != null) {
 			String path = request.getSession().getServletContext().getRealPath("userUpload");
-			String type = filePath.substring(filePath.lastIndexOf("."),filePath.length());
+			String type = filePath.substring(filePath.lastIndexOf("."), filePath.length());
 			if (".apk".equals(type)) {
 				path = path + "/apk";
 			}
@@ -59,7 +69,7 @@ public class HttpUtils {
 			if (".apk".equals(type)) {
 				path = path + "/apk";
 				name = fileName;
-			}else{
+			} else {
 				name = System.currentTimeMillis() + type;
 			}
 			File logo = new File(path, name);
@@ -73,10 +83,10 @@ public class HttpUtils {
 			String contextPath = request.getContextPath();
 			if (".apk".equals(type)) {
 				logoPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-				+ contextPath + "/userUpload/apk/" + name;
-			}else{
+						+ contextPath + "/userUpload/apk/" + name;
+			} else {
 				logoPath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
-				+ contextPath + "/userUpload/" + name;
+						+ contextPath + "/userUpload/" + name;
 			}
 		}
 		return logoPath;
@@ -112,7 +122,7 @@ public class HttpUtils {
 	 * @param total
 	 *            总记录数
 	 ***/
-	public static void sendToAjax(HttpServletResponse response,Map<String, Object> map) {
+	public static void sendToAjax(HttpServletResponse response, Map<String, Object> map) {
 		Gson gson = new Gson();
 		try {
 			response.setCharacterEncoding("UTF-8");

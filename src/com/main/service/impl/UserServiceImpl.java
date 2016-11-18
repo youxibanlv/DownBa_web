@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.main.dao.UserDao;
 import com.main.model.User;
 import com.main.service.IUserService;
-@Service("userService")
+@Service
 @Transactional  //此处不再进行创建SqlSession和提交事务，都已交由spring去管理了。
 public class UserServiceImpl implements IUserService{
 	@Resource
@@ -40,7 +40,11 @@ public class UserServiceImpl implements IUserService{
 		// TODO Auto-generated method stub
 		return usermapper.findAll();
 	}
-	
-	
+
+	@Override
+	public User getUserByName(String userName) {
+		
+		return usermapper.getUserByName(userName);
+	}
 
 }

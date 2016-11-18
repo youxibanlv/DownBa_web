@@ -15,12 +15,12 @@
 		<result column="appIds" property="appIds"/>
 		<result column="updateTime" property="updateTime"/>
 	</resultMap>
-	<insert id="addHomeBean" parameterType="com.main.model.HomeBean">
+	<insert id="addHomeBean" parameterType="com.main.model.HomeBean" >
 		insert into down_bar.t_home(homeBeanType,homeBeanTitle,homeBeanLogo,appIds,updateTime,sort) 
 			values(#{homeBean.homeBeanType},#{homeBean.homeBeanTitle},#{homeBean.homeBeanLogo},
 			#{homeBean.appIds},#{homeBean.updateTime},#{homeBean.sort})
 	</insert>
-	<select id="getList" parameterType="java.lang.Integer" resultMap="all">
+	<select id="getList" parameterType="java.lang.Integer" resultMap="all" useCache="true">
 		select * from down_bar.t_home ORDER BY sort DESC,id DESC,updateTime DESC limit #{pageno},#{pagesize};
 	</select>
 	<select id="getTotalHomeBean" parameterType="java.lang.Integer" resultType="java.lang.Integer">

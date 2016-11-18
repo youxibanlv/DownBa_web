@@ -7,6 +7,13 @@
 	
  -->
 <mapper namespace = "com.main.dao.UserDao">
+	<update id="update" parameterType="com.main.model.User">
+		UPDATE t_user SET password = #{user.password},token = #{user.token},phone=#{user.phone},nickname=#{user.nickname},
+			icon = #{user.icon},alipay=#{user.alipay},point=#{user.point} where username = #{user.username}
+	</update>
+	<select id="getUserByName" parameterType="String" resultType="com.main.model.User">
+		select * from t_user where username = #{userName};
+	</select>
 	<insert id="save" parameterType = "com.main.model.User">
 		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
 			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})
