@@ -45,7 +45,13 @@ public class AppServiceImpl implements IAppService {
 		if (pageSize == 0) {
 			pageSize = Constance.DEFALT_PAGESIZE;
 		}
-		List<App> list = appDao.getAppListByCateId(orderType,cateId,(pageNo-1)*pageSize,pageSize);
+		List<App> list;
+		if (orderType == Constance.ORDER_HOT) {
+			String idString = appDao.getIdStringByCateId(cateId);
+			list = appDao.getAppByAppIdStr(idString);
+		}else{
+			list = appDao.getAppListByCateId(cateId,(pageNo-1)*pageSize,pageSize);
+		}
 		return list;
 	}
 

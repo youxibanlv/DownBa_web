@@ -13,5 +13,14 @@ public interface Constance {
 	
 	int TYPW_SUSPECT = 2;//2为猜你喜欢
 	
+	int ORDER_HOT= 1;//排行
+    int ORDER_NEW = 2;//最新
+    
+    int cate_original = 23;//原创的数据库id
+    int cate_review = 19;//评测的数据库id
+    int cate_news = 22;//行业新闻的数据库id
+    int cate_app = 1;//应用
+    int cate_game= 2;//游戏
+	
 	 String CLIENT_SECRET ="down8app@strike%*xo" ;//app鉴权秘钥
 }

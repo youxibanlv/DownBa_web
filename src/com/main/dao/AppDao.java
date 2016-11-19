@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.main.model.App;
 
 public interface AppDao {
-	
+	//根据id查详情
 	String getDesc(@Param("app_id")String appId);
 	//获取图片列表
 	List<String> getResource(@Param("app_id")String appId);
@@ -32,8 +32,12 @@ public interface AppDao {
 	 * 根据分类获取应用列表
 	 * 
 	 ***/
-	List<App> getAppListByCateId(@Param("orderType")int orderType,@Param("cateId")int cateId,@Param("pageNO")int pageNO,@Param("pageSize")int pageSize);
-
+	List<App> getAppListByCateId(@Param("cateId")int cateId,@Param("pageNO")int pageNO,@Param("pageSize")int pageSize);
+	/***
+	 * 根查询应用或者游戏排行榜（10条数据）
+	 * 
+	 ***/
+	String getIdStringByCateId(@Param("cateId")int cateId);
 	/***
 	 * 根据id获取应用列表
 	 * 
