@@ -20,7 +20,9 @@ import com.main.model.Subject;
 import com.main.model.mobile.HttpConstance;
 import com.main.model.mobile.request.AddCommentReq;
 import com.main.model.mobile.request.AppDetailsReq;
+import com.main.model.mobile.request.DownloadUrlReq;
 import com.main.model.mobile.request.GetAppByCateIdReq;
+import com.main.model.mobile.request.GetAppsByIdStringReq;
 import com.main.model.mobile.request.GetCategoryReq;
 import com.main.model.mobile.request.HomeBeanReq;
 import com.main.model.mobile.request.InfoReq;
@@ -28,6 +30,7 @@ import com.main.model.mobile.request.RecommendReq;
 import com.main.model.mobile.request.SubjectReq;
 import com.main.model.mobile.response.AddCommentRsp;
 import com.main.model.mobile.response.AppDetailsRsp;
+import com.main.model.mobile.response.DownloadUrlRsp;
 import com.main.model.mobile.response.GetAppListRsp;
 import com.main.model.mobile.response.GetCategoryRsp;
 import com.main.model.mobile.response.HomeBeanRsp;
@@ -62,7 +65,26 @@ public class AppService {
 	private ICommentService commentService;
 	@Autowired
 	private InfoService infoService;
-	
+	//查询下载地址
+	@RequestMapping(value ="getUrlById.do")
+	public void getUrlById(@RequestBody DownloadUrlReq req,HttpServletResponse response){
+		DownloadUrlRsp rsp;
+		if (req != null) {
+			rsp= new DownloadUrlRsp(req);
+			String url = appService.getDownloadUrl(req.requestParams.app_id);
+			if (url != null && !"".equals(url)) {
+				rsp.result = 0;
+				rsp.resultData = url;
+			}else {
+				rsp.failReason ="没有查询到相关记录";
+			}
+		}else{
+			rsp = new DownloadUrlRsp();
+			rsp.failReason = "请求参数错误";
+		}
+		
+		HttpUtils.sendRsp(response, rsp);
+	}
 	//获取专题列表
 	@RequestMapping(value="getSubject.do")
 	public void getSubject(@RequestBody SubjectReq req,HttpServletResponse response){
@@ -112,8 +134,6 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-	
-	
 	//发表评论
 	@RequestMapping(value="addComment.do")
 	public void addComment(@RequestBody AddCommentReq req,HttpServletResponse response){
@@ -138,7 +158,6 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-	
 	//查询app的截图列表和评论列表
 	@RequestMapping(value="getAppDetails.do")
 	public void getAppDetails(@RequestBody AppDetailsReq req,HttpServletResponse response){
@@ -154,7 +173,29 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-//	根据分类查询app列表
+	//根据idString查询app列表
+	@RequestMapping(value="getAppsByIdString")
+	public void getAppsByIdString(@RequestBody GetAppsByIdStringReq req,HttpServletResponse response) {
+		GetAppListRsp rsp =null;
+		if (req!= null) {
+			rsp = new GetAppListRsp(req);
+			String idString = req.requestParams.ids;
+			List<App> list=appService.getAppByAppIdStr(idString);
+			if (list!= null && list.size()>0) {
+				rsp.result = 0;
+				rsp.resultData.appList = list;
+			}else{
+				rsp.failReason = "没有查询到相关数据";
+			}
+			
+		}else{
+			rsp = new GetAppListRsp();
+			rsp.failReason="请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	
+	//	根据分类查询app列表
 	@RequestMapping(value="getAppListByCate.do")
 	public void getAppListByCate(@RequestBody GetAppByCateIdReq req,HttpServletResponse response){
 		GetAppListRsp rsp =null;

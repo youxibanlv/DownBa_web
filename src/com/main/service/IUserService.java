@@ -9,7 +9,7 @@ import com.main.model.User;
 
 public interface IUserService {
 	User getUserByName(String userName);
-	void save(User user);
+	boolean save(User user);
 	boolean update(User user);
 	boolean delete(int id);
 	User findById(int id);

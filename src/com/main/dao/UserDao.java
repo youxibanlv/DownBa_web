@@ -10,7 +10,7 @@ import com.main.model.User;
 
 public interface UserDao {
 	User getUserByName(@Param("userName")String userName);
-	void save(User user);
+	boolean save(@Param("user")User user);
 	boolean update(@Param("user")User user);
 	boolean delete(int id);
 	User findById(int id);

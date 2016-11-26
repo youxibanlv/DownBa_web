@@ -3,7 +3,6 @@ package com.main.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.support.DaoSupport;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +11,6 @@ import com.main.dao.CommentDao;
 import com.main.model.App;
 import com.main.service.IAppService;
 import com.main.utils.Constance;
-import com.main.utils.TextUtils;
 @Service
 @Transactional
 public class AppServiceImpl implements IAppService {
@@ -107,6 +105,11 @@ public class AppServiceImpl implements IAppService {
 		//查询app详情
 		app.setApp_desc(appDao.getDesc(appId));
 		return app;
+	}
+
+	@Override
+	public String getDownloadUrl(String appID) {
+		return appDao.getDownloadUrl(appID);
 	}
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import com.main.model.App;
 
 public interface IAppService {
+	
+	String getDownloadUrl(String appID);
 	//获取app详情
 	App getAppDetails(String appid);
 	/***

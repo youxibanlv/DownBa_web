@@ -7,6 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.main.model.App;
 
 public interface AppDao {
+	
+	//查询app下载地址
+	String getDownloadUrl(@Param("app_id") String appID);
 	//根据id查详情
 	String getDesc(@Param("app_id")String appId);
 	//获取图片列表

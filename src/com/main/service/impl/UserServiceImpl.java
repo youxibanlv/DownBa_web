@@ -16,11 +16,6 @@ public class UserServiceImpl implements IUserService{
 	@Resource
 	private UserDao usermapper;
 
-	public void save(User user) {
-		usermapper.save(user);
-		
-	}
-
 	public boolean update(User user) {
 		// TODO Auto-generated method stub
 		return usermapper.update(user);
@@ -43,8 +38,12 @@ public class UserServiceImpl implements IUserService{
 
 	@Override
 	public User getUserByName(String userName) {
-		
 		return usermapper.getUserByName(userName);
+	}
+
+	@Override
+	public boolean save(User user) {
+		return usermapper.save(user);
 	}
 
 }

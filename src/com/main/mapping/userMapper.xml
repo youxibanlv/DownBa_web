@@ -14,9 +14,10 @@
 	<select id="getUserByName" parameterType="String" resultType="com.main.model.User">
 		select * from t_user where username = #{userName};
 	</select>
-	<insert id="save" parameterType = "com.main.model.User">
-		insert into t_user(uid,username,password,token,phone,nickname,icon,alipay,point) 
-			values(#{uid},#{username},#{password},#{token},#{phone},#{nickname},#{icon},#{alipay},#{point})
+	<insert id="save" parameterType = "com.main.model.User" >
+		insert into down_bar.t_user(username,password,token,phone,nickname,icon,alipay,point,regist_time,update_time) 
+			values(#{user.username},#{user.password},#{user.token},#{user.phone},#{user.nickname},#{user.icon},
+			#{user.alipay},#{user.point},#{user.regist_time},#{user.update_time})
 	</insert>
 	<select id="findById" parameterType = "int" resultType="com.main.model.User">
 		select * from t_user where uid =#{uid}
