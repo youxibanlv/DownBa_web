@@ -8,6 +8,9 @@ import com.main.model.App;
 
 public interface AppDao {
 	
+	//模糊查询应用
+	List<App> getAppByKeyword(@Param("key")String key,@Param("pageNo")int pageNo, @Param("pageSize")int pageSize);
+	int getTotalByKey(@Param("key")String key);
 	//查询app下载地址
 	String getDownloadUrl(@Param("app_id") String appID);
 	//根据id查详情

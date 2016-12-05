@@ -14,6 +14,7 @@ import com.main.model.Category;
 import com.main.model.Comment;
 import com.main.model.HomeBean;
 import com.main.model.Info;
+import com.main.model.Keyword;
 import com.main.model.PageBean;
 import com.main.model.Recommend;
 import com.main.model.Subject;
@@ -22,10 +23,12 @@ import com.main.model.mobile.request.AddCommentReq;
 import com.main.model.mobile.request.AppDetailsReq;
 import com.main.model.mobile.request.DownloadUrlReq;
 import com.main.model.mobile.request.GetAppByCateIdReq;
+import com.main.model.mobile.request.GetAppByKeywordReq;
 import com.main.model.mobile.request.GetAppsByIdStringReq;
 import com.main.model.mobile.request.GetCategoryReq;
 import com.main.model.mobile.request.HomeBeanReq;
 import com.main.model.mobile.request.InfoReq;
+import com.main.model.mobile.request.KeywordsReq;
 import com.main.model.mobile.request.RecommendReq;
 import com.main.model.mobile.request.SubjectReq;
 import com.main.model.mobile.response.AddCommentRsp;
@@ -35,12 +38,14 @@ import com.main.model.mobile.response.GetAppListRsp;
 import com.main.model.mobile.response.GetCategoryRsp;
 import com.main.model.mobile.response.HomeBeanRsp;
 import com.main.model.mobile.response.InfoRsp;
+import com.main.model.mobile.response.KeywordsRsp;
 import com.main.model.mobile.response.RecommendRsp;
 import com.main.model.mobile.response.SubjectRsp;
 import com.main.service.IAppService;
 import com.main.service.ICateService;
 import com.main.service.ICommentService;
 import com.main.service.IHomeBeanService;
+import com.main.service.IKeywordService;
 import com.main.service.IRecommendService;
 import com.main.service.ISubjectService;
 import com.main.service.InfoService;
@@ -65,6 +70,50 @@ public class AppService {
 	private ICommentService commentService;
 	@Autowired
 	private InfoService infoService;
+	@Autowired
+	private IKeywordService keywordService;
+	//模糊查询app列表
+	@RequestMapping(value="getAppByKeyword")
+	public void getAppByKeyword(@RequestBody GetAppByKeywordReq req,HttpServletResponse response){
+		GetAppListRsp rsp;
+		if (req!= null) {
+			rsp = new GetAppListRsp(req);
+			String key = req.requestParams.keyword;
+			int pageNo = req.requestParams.pageNo;
+			int pageSize = req.requestParams.pageSize;
+			List<App> apps = appService.getAppByKeyword(key, pageNo, pageSize);
+			if (pageNo < 2) {
+				PageBean pageBean = HttpUtils.getPageBean(pageNo, pageSize, appService.getTotalByKey(key));
+				rsp.resultData.pageBean = pageBean;
+			}
+			if (apps!= null && apps.size()>0) {
+				rsp.result = HttpConstance.HTTP_SUCCESS;
+				rsp.resultData.appList=apps;
+			}else{
+				rsp.failReason="没有该应用，请重新输入！";
+			}
+		}else {
+			rsp = new GetAppListRsp();
+			rsp.failReason = "请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	//获取热搜词
+	@RequestMapping(value="getKeywords.do")
+	public void getKeywords(@RequestBody KeywordsReq req,HttpServletResponse response){
+		KeywordsRsp rsp;
+		if (req!= null) {
+			rsp = new KeywordsRsp(req);
+			String key = req.requestParams.key==null?"":req.requestParams.key;
+			int num = req.requestParams.size;
+			rsp.resultData.keywords = keywordService.getDefault(key, num);
+			rsp.result = HttpConstance.HTTP_SUCCESS;
+		}else {
+			rsp = new KeywordsRsp();
+			rsp.failReason = "请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
 	//查询下载地址
 	@RequestMapping(value ="getUrlById.do")
 	public void getUrlById(@RequestBody DownloadUrlReq req,HttpServletResponse response){
@@ -194,7 +243,6 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-	
 	//	根据分类查询app列表
 	@RequestMapping(value="getAppListByCate.do")
 	public void getAppListByCate(@RequestBody GetAppByCateIdReq req,HttpServletResponse response){
@@ -223,7 +271,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-//	获取分类列表
+   //	获取分类列表
 	@RequestMapping(value="getCateByParentId.do")
 	public void getCateByParentId(@RequestBody GetCategoryReq req,HttpServletResponse response){
 		GetCategoryRsp rsp = null;
@@ -245,7 +293,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-//获取首页模块
+   //获取首页模块
 	@RequestMapping(value="getHomeBeans.do")
 	public void getHomeBeans(@RequestBody HomeBeanReq req,HttpServletResponse response){
 		HomeBeanRsp rsp = null;
@@ -278,7 +326,7 @@ public class AppService {
 		}
 		HttpUtils.sendRsp(response, rsp);
 	}
-//获取推荐内容
+   //获取推荐内容
 	@RequestMapping(value ="getRecommend.do")
 	public void getRecommend(@RequestBody RecommendReq recommendReq, HttpServletResponse response) {
 		RecommendRsp rsp = null;

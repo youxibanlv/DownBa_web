@@ -5,7 +5,7 @@
 			<!-- 当前位置 -->
 			<div id="urHere">下吧市场管理中心</div>
 			<div id="index" class="mainBox"
-				style="padding-top: 18px; height: auto !important; height: 550px; min-height: 550px;">
+				style="padding-top: 18px; height: auto !important; height: 550px; min-height: 550px; background: white">
 				<div id="douApi"></div>
 				<div class="indexBox">
 					<div class="boxTitle">单页面快速管理</div>

@@ -59,6 +59,14 @@
 		<result column="app_title" property="app_title"/>
 		<result column="app_logo" property="app_logo"/>
 	</resultMap>
+	<select id="getAppByKeyword" resultMap="appResult">
+		select app_id,last_cate_id,app_title,app_version,app_update_time,app_size,app_logo,
+		 app_grade,app_visitors,app_down,app_order,app_recomment,seo_keywords 
+		  from app.appcms_app_list where app_title like '%${key}%' limit #{pageNo},#{pageSize}
+	</select>
+	<select id="getTotalByKey" parameterType="String" resultType="int">
+		select COUNT(app_id ) from app.appcms_app_list where app_title like '%${key}%'
+	</select>
 	<select id="getDownloadUrl" parameterType="String" resultType="String">
 		select down_url from app.appcms_app_history where app_id = #{app_id} ORDER BY history_id DESC limit 0,1
 	</select>

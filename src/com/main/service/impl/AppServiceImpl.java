@@ -112,4 +112,20 @@ public class AppServiceImpl implements IAppService {
 		return appDao.getDownloadUrl(appID);
 	}
 
+	@Override
+	public List<App> getAppByKeyword(String key, int pageNo, int pageSize) {
+		if (pageNo<1) {
+			pageNo = 1;
+		}
+		if (pageSize == 0) {
+			pageSize = Constance.DEFALT_PAGESIZE;
+		}
+		return appDao.getAppByKeyword(key,(pageNo-1)*pageSize,pageSize);
+	}
+
+	@Override
+	public int getTotalByKey(String key) {
+		return appDao.getTotalByKey(key);
+	}
+
 }

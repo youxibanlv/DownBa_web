@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	namespace：必须与对应的接口全类名一致
+	id:必须与对应接口的某个对应的方法名一致
+	
+ -->
+<mapper namespace = "com.main.dao.KeywordDao">
+	<resultMap type="com.main.model.Keyword" id="all">
+		<id column="id" property="id"/>
+		<result column="q" property="q"/>
+		<result column="qnum" property="qnum"/>
+		<result column="qorder" property="qorder"/>
+	</resultMap>
+	<insert id="add" parameterType="com.main.model.Keyword">
+		insert into app.appcms_search_keyword(q,qnum,qorder) values(#{keyword.q},#{keyword.qnum},#{keyword.qorder})
+	</insert>
+	<select id="getDefault" resultMap="all">
+		select * from app.appcms_search_keyword where 1=1 
+		<if test='key != "" '> and q like '%${key}%'</if>
+		ORDER BY qnum DESC limit 0,#{num};
+	</select>
+	<select id="getKeyword" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+		select * from app.appcms_search_keyword where q = #{key}
+	</select>
+</mapper>
