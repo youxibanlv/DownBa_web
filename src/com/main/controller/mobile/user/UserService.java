@@ -45,6 +45,7 @@ public class UserService {
 					user.setIcon(icon);
 					rsp.result = HttpConstance.HTTP_SUCCESS;
 					rsp.resultData = user; 
+					service.update(user);
 				}else {
 					rsp.failReason="上传图片失败";
 				}

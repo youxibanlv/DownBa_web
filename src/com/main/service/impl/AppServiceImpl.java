@@ -11,6 +11,8 @@ import com.main.dao.CommentDao;
 import com.main.model.App;
 import com.main.service.IAppService;
 import com.main.utils.Constance;
+import com.main.utils.HttpUtils;
+import com.main.utils.TextUtils;
 @Service
 @Transactional
 public class AppServiceImpl implements IAppService {
@@ -103,7 +105,7 @@ public class AppServiceImpl implements IAppService {
 		//查询评论列表
 		app.setCommentList(commentDao.getListByAppId(appId));
 		//查询app详情
-		app.setApp_desc(appDao.getDesc(appId));
+		app.setApp_desc(TextUtils.delHTMLTag(appDao.getDesc(appId)));
 		return app;
 	}
 

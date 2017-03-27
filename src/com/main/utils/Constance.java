@@ -7,6 +7,8 @@ public interface Constance {
 	//图片资源的外网ip
 	String BASE_URL = "http://123.57.86.113";//外网
 	
+	String BASE_IMG_URL = "http://www.82down.com";
+	
 	int DEFAULT_LENGTH = 20;//默认标题长度
 	
 	int TYPE_WHEEL = 1;//1为轮播图

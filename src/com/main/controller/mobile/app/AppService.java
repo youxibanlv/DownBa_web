@@ -1,6 +1,8 @@
 package com.main.controller.mobile.app;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.catalina.deploy.LoginConfig;
@@ -27,6 +29,7 @@ import com.main.model.mobile.request.GetAppByKeywordReq;
 import com.main.model.mobile.request.GetAppsByIdStringReq;
 import com.main.model.mobile.request.GetCategoryReq;
 import com.main.model.mobile.request.HomeBeanReq;
+import com.main.model.mobile.request.InfoDesReq;
 import com.main.model.mobile.request.InfoReq;
 import com.main.model.mobile.request.KeywordsReq;
 import com.main.model.mobile.request.RecommendReq;
@@ -37,6 +40,7 @@ import com.main.model.mobile.response.DownloadUrlRsp;
 import com.main.model.mobile.response.GetAppListRsp;
 import com.main.model.mobile.response.GetCategoryRsp;
 import com.main.model.mobile.response.HomeBeanRsp;
+import com.main.model.mobile.response.InfoDesRsp;
 import com.main.model.mobile.response.InfoRsp;
 import com.main.model.mobile.response.KeywordsRsp;
 import com.main.model.mobile.response.RecommendRsp;
@@ -72,6 +76,31 @@ public class AppService {
 	private InfoService infoService;
 	@Autowired
 	private IKeywordService keywordService;
+	//显示咨询详情
+	@RequestMapping(value="getInfoDes")
+	public void getInfoDes(@RequestBody InfoDesReq req,HttpServletResponse response) {
+//		String id = request.getParameter("id");
+//		Info info = infoService.getInfoById(Integer.parseInt(id));
+//		request.setAttribute("info", info);
+//		return "infoContent";
+		InfoDesRsp rsp = null;
+		if (req != null) {
+			rsp = new InfoDesRsp(req);
+			int id = req.requestParams.id;
+			Info info = infoService.getInfoById(id);
+			if (info!= null) {
+				rsp.resultData.infoBody = info.getInfo_body();
+				rsp.result = HttpConstance.HTTP_SUCCESS;
+			}else {
+				rsp.failReason = "未查询到相关应用" ;
+			}
+		}else {
+			rsp = new InfoDesRsp();
+			rsp.failReason="请求参数错误";
+		}
+		HttpUtils.sendRsp(response, rsp);
+	}
+	
 	//模糊查询app列表
 	@RequestMapping(value="getAppByKeyword")
 	public void getAppByKeyword(@RequestBody GetAppByKeywordReq req,HttpServletResponse response){

@@ -109,9 +109,9 @@ public class TimeUtil {
 			formart = "yyyy年MM月dd日";
 		}
         DateFormat sdf = new SimpleDateFormat(formart);
-        Date date = new Date(m);
-        System.out.println(sdf.format(date));
-        return sdf.format(date);
+        Date d = new Date(m);
+        System.out.println(sdf.format(d));
+        return sdf.format(d);
     }
 
     /**

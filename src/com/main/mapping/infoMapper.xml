@@ -16,12 +16,18 @@
 		<result column="info_visitors" property="info_visitors"/>
 		<result column="info_desc" property="info_desc"/>
 	</resultMap>
+	<resultMap type="com.main.model.Info" id="infoBody">
+		<id column="info_id" property="info_id"/>
+		<result column="info_body" property="info_body"/>
+		<result column="info_update_time" property="info_update_time"/>
+		<result column="info_from" property="info_from"/>
+	</resultMap>
 	<select id="getInfoListByCateId" parameterType="int" resultMap="full">
 		select info_id,parent_id,last_cate_id,info_title,info_img,info_visitors,info_desc
 		from app.appcms_info_list  where last_cate_id =#{cateId} and info_img != '' ORDER BY info_update_time DESC limit #{pageNO},#{pageSize}
 	</select>
 	<select id="getInfoById" parameterType="int" resultMap="full">
-		select info_body from app.appcms_info_list where info_id =#{infoId} 
+		select info_title,info_body,info_update_time from app.appcms_info_list where info_id =#{infoId} 
 	</select>
 	<select id="getTotal"  parameterType="int" resultType="int">
 		select count(info_id) from app.appcms_info_list where last_cate_id =#{cateId} and info_img != ''

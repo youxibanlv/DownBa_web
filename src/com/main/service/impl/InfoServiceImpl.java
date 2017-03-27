@@ -31,9 +31,9 @@ public class InfoServiceImpl implements InfoService {
 	
 	@Override
 	public Info getInfoById(int infoId) {
-		Info info = new Info();
-		info.setInfo_body(dao.getInfoById(infoId).getInfo_body());
-		return info;
+//		Info info = new Info();
+//		info.setInfo_body(dao.getInfoById(infoId).getInfo_body());
+		return dao.getInfoById(infoId);
 	}
 
 
